@@ -1,0 +1,378 @@
+<root>
+    <sir>
+    <name>pool</name>
+        <source>https://github.com/qihao27/PoolBugRepo</source>
+        <bug>
+            <id>pool-376</id>
+            <author>sxz</author>
+            <docker>fasle</docker>         
+            <rootcause>src/main/java/org/apache/commons/pool2/impl/GenericObjectPool.java,922,929</rootcause>
+            <testcase>org.apache.commons.pool2.impl.TestGenericObjectPool#testNoInvalidateNPE</testcase>
+            <entry>
+                <commit>fba4a52cc59300f5670cd90027edcc8427a7fb7e</commit>
+                <testcmd>mvn test -Dtest=TestGenericObjectPool#testNoInvalidateNPE</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>e70ef846b2fe7c2522d9ad7dfce2eb6a7936d3e4</commit>
+                <testcmd>mvn test -Dtest=TestGenericObjectPool#testNoInvalidateNPE</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>e9adc1622a6ee1d4ee950b9d3eda703976109b8f</commit>
+                <testcmd>mvn test -Dtest=TestGenericObjectPool#testNoInvalidateNPE</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+    </sir>
+    <sir>
+    <name>jdk</name>
+        <source>https://github.com/qihao27/JDKBugRepo</source>
+        <bug>
+            <id>jdk2</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <rootcause></rootcause>
+            <testcase>test.jdk.com.sun.jndi.ldap.LdapCtx.Reconnect.java</testcase>
+            <entry>
+                <commit>69bc40f23803bcf4197ced93ea1e35aa4201a371</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make test TEST="jdk/test/com/sun/jndi/ldap/LdapCtx/Reconnect.java" DISABLE_HOTSPOT_OS_VERSION_CHECK=OK</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>31785646778956624c64d9afaf5551d43f1c6dab</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make test TEST="jdk/test/com/sun/jndi/ldap/LdapCtx/Reconnect.java" DISABLE_HOTSPOT_OS_VERSION_CHECK=OK</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>af8955087844eeab5c219d6656ed3729591bb08c</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/com/sun/jndi/ldap/LdapCtx/Reconnect.java"</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>jdk4</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <rootcause></rootcause>
+            <testcase>test.jdk.java.rmi.server.RMISocketFactory.useSocketFactory.unicast.TCPEndpointReadBug.java</testcase>
+            <entry>
+                <commit>1f9f1ca3e7f7e920ebfbe1a34021678b35957608</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/rmi/server/RMISocketFactory/useSocketFactory/unicast/TCPEndpointReadBug.java"</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>390e171e6aa34b6fcacebce5450ded4f4160cf06</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/rmi/server/RMISocketFactory/useSocketFactory/unicast/TCPEndpointReadBug.java"</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>2760497b01c2320cc4ff54e83d27e04eda0a7e2e</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/rmi/server/RMISocketFactory/useSocketFactory/unicast/TCPEndpointReadBug.java"</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>jdk8</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <rootcause></rootcause>
+            <testcase>test.jdk.sun.management.StackTraceElementCompositeData.CompatibilityTest.java</testcase>
+            <entry>
+                <commit>ba7fca94ebeae12d6268c40dee6395be039b31a1</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/sun/management/StackTraceElementCompositeData/CompatibilityTest.java"</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>65c9409deaafc1474a92bf7e5661387c241b04f5</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/sun/management/StackTraceElementCompositeData/CompatibilityTest.java"</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>a9b4ac9c37d742885130da7792aa125653421e79</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/sun/management/StackTraceElementCompositeData/CompatibilityTest.java"</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>jdk9</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <rootcause></rootcause>
+            <testcase>test.jdk.java.lang.management.CompositeData.ThreadInfoCompositeData.java</testcase>
+            <entry>
+                <commit>38eb0aed6346983878639e0431b7e8be2bcdcd64</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/lang/management/CompositeData/ThreadInfoCompositeData.java"</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>0a9feded8ef8b3d3e465ef37c869ab8bb4769000</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/lang/management/CompositeData/ThreadInfoCompositeData.java"</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>2bff9c762987e421915ec644b466660fcd330dce</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/lang/management/CompositeData/ThreadInfoCompositeData.java"</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>jdk17</id>
+            <author></author>
+            <docker>true</docker>
+            <testcase></testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>jdk19</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <testcase>test.jdk.java.util.TimeZone.Bug8149452.java</testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit>4b43f63317cecefd98c0823de6ff18c092fc1544</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/util/TimeZone/Bug8149452.java"</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>47b4835592dba553f02adfbdcc1e4a18844ce99e</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/util/TimeZone/Bug8149452.java"</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>f1241f2e3013b3d9817b76fc4d3e9a327230155e</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make run-test TEST="jtreg:test/jdk/java/util/TimeZone/Bug8149452.java"</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>jdk22</id>
+            <author></author>
+            <docker>true</docker>
+            <testcase></testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>jdk23</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <rootcause></rootcause>
+            <testcase>jdk.test.java.util.logging.CheckZombieLockTest.java</testcase>
+            <entry>
+                <commit>6f8e7e1bcee8fcfbc553cd0890e8f8619a7ab84d</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make test TEST="jdk_wqh" DISABLE_HOTSPOT_OS_VERSION_CHECK=OK</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>11735687215a90345914f41fdc480c3d7a6c31ff</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make test TEST="jdk_wqh" DISABLE_HOTSPOT_OS_VERSION_CHECK=OK</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>cc4fb6183f90093dd605ca37183260d890ac1f7a</commit>
+                <testcmd>bash configure --with-jtreg=/home/jtreg &amp;&amp; make test TEST="jdk_wqh" DISABLE_HOTSPOT_OS_VERSION_CHECK=OK</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+    </sir>
+    <sir>
+    <name>derby</name>
+        <source>https://github.com/qihao27/DerbyBugRepo</source>
+        <bug>
+            <id>derby3</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <testcase>org.apache.derbyTesting.functionTests.tests.management.CustomMBeanServerBuilderTest.java</testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit>a1eec611547f7bfc3547394682c462bde89ca9f4</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.management.CustomMBeanServerBuilderTest junit-single</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>9e1f665bc8033529e0242ebd5608462d8a5a8760</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.management.CustomMBeanServerBuilderTest junit-single</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>38bf0acf0dd99cefdab45a99a3af947f359dca74</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.management.CustomMBeanServerBuilderTest junit-single</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>derby5</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <testcase>org.apache.derbyTesting.functionTests.tests.lang.GeneratedColumnsTest.java</testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit>41faddffe3623acba806655abcda9c77df5a77e3</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.lang.GeneratedColumnsTest junit-single</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>b34d78d8df1ca18648a216d26121e68cb18f6f51</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.lang.GeneratedColumnsTest junit-single</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>1add41ec21d4d6341ee5ea01e36f9e5c79022b3f</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.lang.GeneratedColumnsTest junit-single</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>derby8</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <testcase>org.apache.derbyTesting.functionTests.tests.replicationTests.ReplicationRun_Local_Derby4910.java</testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit>9119c2e08a8f50c486ce2262abf2ebe9ba7a0275</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.replicationTests.ReplicationRun_Local_Derby4910 junit-single</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>f105e52868eb0f36f01788bfac8ebb3584753b3b</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.replicationTests.ReplicationRun_Local_Derby4910 junit-single</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>b4fb1b3790fce6101cfe48eb9e7dacf9e940ffed</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.replicationTests.ReplicationRun_Local_Derby4910 junit-single</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+        <bug>
+            <id>derby11</id>
+            <author>wqh</author>
+            <docker>true</docker>
+            <testcase>org.apache.derbyTesting.functionTests.tests.lang.InsertTest.java</testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit>3d4d9a36fb9b3bcb5bf2c3be711b7be018600715</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.lang.InsertTest junit-single</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>9de26fda4b488babdb714686d15ad2dcf4430eb2</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.lang.InsertTest junit-single</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>85fc607c01e1577bbaedd4f31e13855dc793db7a</commit>
+                <testcmd>ant -quiet clobber &amp;&amp; ant -quiet buildsource &amp;&amp; ant -quiet all &amp;&amp; ant -quiet buildjars &amp;&amp; ant -Dderby.junit.testclass=org.apache.derbyTesting.functionTests.tests.lang.InsertTest junit-single</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+    </sir>
+    <sir>
+    <name>groovy</name>
+        <source>https://github.com/qihao27/GroovyBugRepo</source>
+        <bug>
+            <id>groovy1</id>
+            <author>wqh</author>
+            <docker>false</docker>
+            <testcase>src.test.groovy.util.logging.Slf4jTest.groovy</testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit>a1d2aba073b41a4074e6ccfa2e2337d20c83b000</commit>
+                <testcmd>gradlew :test --tests groovy.util.logging.Slf4jTest</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>d40b269caf3ca665176d64bd22b494c8d2c62359</commit>
+                <testcmd>gradlew :test --tests groovy.util.logging.Slf4jTest</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>fb6553dcef552efe3b8d6244a72551d86c4cd92f</commit>
+                <testcmd>gradlew :test --tests groovy.util.logging.Slf4jTest</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+    </sir>
+    <sir>
+    <name>dbcp</name>
+        <source>https://github.com/qihao27/DBCPBugRepo</source>
+        <bug>
+            <id>dbcp1</id>
+            <author>wqh</author>
+            <docker>false</docker>
+            <testcase>src.test.java.org.apache.commons.dbcp2.TestPStmtPoolingBasicDataSource.java</testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit>b310bc42bd07c3c687b7110de76653a955577f5c</commit>
+                <testcmd>mvn clean -Dskip.test=true &amp;&amp; mvn test -Dtest=TestPStmtPoolingBasicDataSource#testMultipleThreads1</testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit>6af48204969db0723c695d23cee8b79ce1af511e</commit>
+                <testcmd>mvn clean -Dskip.test=true &amp;&amp; mvn test -Dtest=TestPStmtPoolingBasicDataSource#testMultipleThreads1</testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit>4e67caeeb829a045661d5d84c40480e2ec4c62c0</commit>
+                <testcmd>mvn clean -Dskip.test=true &amp;&amp; mvn test -Dtest=TestPStmtPoolingBasicDataSource#testMultipleThreads1</testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+    </sir>
+    <sir>
+    <name>lucene</name>
+        <source></source>
+        <bug>
+            <id></id>
+            <author></author>
+            <docker>true</docker>
+            <testcase></testcase>
+            <rootcause></rootcause>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Working</version>
+            </entry>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Regression</version>
+            </entry>
+            <entry>
+                <commit></commit>
+                <testcmd></testcmd>
+                <version>Fixed</version>
+            </entry>
+        </bug>
+    </sir>
+</root>
