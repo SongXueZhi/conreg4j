@@ -207,7 +207,7 @@
     </sir>
     <sir>
     <name>derby</name>
-        <source>https://github.com/qihao27/DerbyBugRepo</source>
+        <source>https://github.com/SongXueZhi/DerbyBugRepo</source>
         <bug>
             <id>derby3</id>
             <author>wqh</author>

@@ -60,6 +60,37 @@ public class Adminexec {
         }
         return builder.toString();
     }
+    
+     public int exeChunck(String cmd) {
+         int a=0;
+        try {
+            String OS = System.getProperty("os.name").toLowerCase();
+            if (OS.equals(OS_WINDOWS)) {
+                pb.command("cmd.exe", "/c", cmd);
+            } else {
+                pb.command("bash", "-c", cmd);
+            }
+            Process process = pb.start();
+            InputStreamReader inputStr = new InputStreamReader(process.getInputStream());
+            BufferedReader bufferReader = new BufferedReader(inputStr);
+            String line;
+            while ((line = bufferReader.readLine()) != null) {
+                if (checkChunkHead(line)) {
+                    a++;
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return a;
+    }
+     boolean checkChunkHead(String line){
+         String[] ss=line.split(" ");
+         if(ss.length>=4&&ss[0].equals("@@")&&ss[3].equals("@@")&&ss[1].contains("-")&&ss[2].contains("+")) {
+             return true;
+         }
+         return false;
+     }
 }
 
     

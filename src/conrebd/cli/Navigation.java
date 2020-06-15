@@ -26,6 +26,7 @@ public class Navigation {
     private  final  static String REFRESH="pull";
    private  final  static String DROP="drop";
       private  final  static String ALL="all";
+    private  final  static String DELETE="delete";
     
     
     private  final  static String FEATURES=LIST+"    --show all bug lise\n"
@@ -35,11 +36,14 @@ public class Navigation {
             +INFO+"<bugID><version>    --show commit Info\n"
             +TEST+"<bugId> <version>    --test a case\n"
             +DIFF+"<bugId> <version1> <version2>    --diff two version\n"
-            +GET+"<bugID>    --get source code of a bug\n"
-            +ADD+"<bugID><isInDocker>    --add bug to database\n"
+            +GET+"<bugID>      --get source code of a bug\n"
+            +ADD+"<params><sir name>    --add bug to database, If the project already exists,\n"
+            + "                         you can use the -e parameter,otherwise use the -a parameter.\n"
+            + "                         The default parameter is -a\n"
             +PULL+"<bugID><version>      --get a version source code"
-            +REFRESH+"    --refresh Configs\n"
-            +DROP+"      --Drop all,or drop <bugID>\n"
+            +DELETE+"<bugID>      --get a version source code"
+            +REFRESH+"    --refresh Configs and DB\n"
+            +DROP+"     --drop <sir name>\n"
             +HELP+"    --get all features\n"        
             +EXIT+"    --exit system";
    static ConReAction jctbe=new ConReAction();

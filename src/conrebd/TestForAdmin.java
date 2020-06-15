@@ -8,13 +8,12 @@ package conrebd;
 import conrebd.executor.Adminexec;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -43,7 +42,9 @@ public class TestForAdmin {
             currentFile = projectName;
             setDirectory("/Volumes/Samsung_T5/KnightSong/software/janconrebe/" + currentFile);
         }
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(currentFile);
+        sb.append(",");
+        sb.append(diffChunck(ss[1], ss[2])).append(",");
         sb.append(diffInChanges(ss[1], ss[2])).append(",");
         sb.append(diffInCommits(ss[1], ss[2])).append(",");
         sb.append(diffInTime(ss[1], ss[2]));
@@ -71,9 +72,16 @@ public class TestForAdmin {
     public String diffInChanges(String version1, String version2) throws Exception {
         // return exec.exec("git rev-list "+commitID2+".."+commitID1+" --count");
         //return exec.exec("git log --pretty=format:“%cd” "+commitID2+" -1");
-        String diff1 = exec.exec("git diff " + version1 + " " + version2 + " --stat");
+        String diff1 = exec.exec("git diff " + version1 + " " + version2 + " --shortstat");
 
         return statictisChanggesLine(diff1);
+    }
+     public int diffChunck(String version1, String version2) throws Exception {
+        // return exec.exec("git rev-list "+commitID2+".."+commitID1+" --count");
+        //return exec.exec("git log --pretty=format:“%cd” "+commitID2+" -1");
+        int diff1 = exec.exeChunck("git diff " + version1 + " " + version2);
+
+        return diff1;
     }
 
     public String diffInCommits(String version1, String version2) throws Exception {
@@ -96,9 +104,8 @@ public class TestForAdmin {
     }
 
     public  String calculateTimeDifferenceByPeriod(LocalDate oldDate, LocalDate newDate) {
- 
-        Period p = Period.between(oldDate, newDate);
-        return p.getYears()+"Y"+p.getMonths()+"M"+p.getDays()+"D";
+        long l=oldDate.until(newDate,ChronoUnit.DAYS);
+        return String.valueOf(l);
     }
 
     public void navigation(String cmd) throws Exception {
@@ -111,7 +118,7 @@ public class TestForAdmin {
             String[] params = cmd.split(" ");
             String version1 = params[1];
             String version2 = params[2];
-            System.out.println(diffInChanges(version1, version2));
+            System.out.println(diffChunck(version1, version2));
         }else{
         handleTask();
         }
@@ -131,4 +138,5 @@ public class TestForAdmin {
         }
         return String.valueOf(sum);
     }
+    
 }
