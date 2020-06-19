@@ -57,7 +57,17 @@ Jdk is used to support the basic operation of the ConReg4J.
 Two docker images are provided in ConReg4J:
 
 - ConReg4J-gcc-Java
+  - gcc/g++>=4.8
+  - git
+  - make3.82
+  - glic2.23
+  - Jdk1.7～13
 - ConReg4J-java-plain
+  - gradle
+  - maven
+  - ant
+  - git
+  - Jdk1.4～12
 
 The ConReg4J-gcc-Java image contains  gcc/g++ make freetype boot-jdk and other stable environments needed to build open-jdk.We have tried to build projects from 2013 to the present, most of the open-jdk can be easily built.
 
