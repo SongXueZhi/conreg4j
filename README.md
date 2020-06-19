@@ -8,28 +8,28 @@ ConReg4J is a dataset for Java concurrency regressions, supporting the research 
 
 ConReg4J contains 20  real-world bugs from the following open-source projects:
 
-| Identifier  | Project name        |
-| ----------- | ------------------- |
-| pool-376    | apache/commons-pool |
-| groovy-6873 | apache/groovy       |
-| jdk-8217606 | openjdk/jdk         |
-| jdk-8068184 | openjdk/jdk         |
-| jdk-8237368 | openjdk/jdk         |
-| jdk-8212197 | openjdk/jdk         |
-| jdk-8212795 | openjdk/jdk         |
-| jdk-8217364 | openjdk/jdk         |
-| jdk-8206965 | openjdk/jdk         |
-| jdk-8059269 | openjdk/jdk         |
-| jdk-8048020 | openjdk/jdk         |
-| derby-3887  | apache/derby        |
-| derby-6880  | apache/derby        |
-| derby-6692  | apache/derby        |
-| derby-4910  | apache/derby        |
-| derby-4671  | apache/derby        |
-| derby-4193  | apache/derby        |
-| lucene-621  | apache/lucene-solr  |
-| dbcp-415    | apache/commons-dbcp |
-| flink-17514 | apache/flink        |
+| Bug index | Identifier                                                   | Project name        |
+| --------- | ------------------------------------------------------------ | ------------------- |
+| pool1     | [pool-376](https://issues.apache.org/jira/browse/POOL-376)   | apache/commons-pool |
+| groovy1   | [groovy-6873](https://issues.apache.org/jira/browse/GROOVY-6873) | apache/groovy       |
+| jdk1      | [jdk-8217606](https://bugs.openjdk.java.net/browse/JDK-8217606) | openjdk/jdk         |
+| jdk2      | [jdk-8068184](https://bugs.openjdk.java.net/browse/JDK-8068184) | openjdk/jdk         |
+| jdk3      | [jdk-8237368](https://bugs.openjdk.java.net/browse/JDK-8237368) | openjdk/jdk         |
+| jdk4      | [jdk-8212197](https://bugs.openjdk.java.net/browse/JDK-8212197) | openjdk/jdk         |
+| jdk5      | [jdk-8212795](https://bugs.openjdk.java.net/browse/JDK-8212795) | openjdk/jdk         |
+| jdk9      | [jdk-8217364](https://bugs.openjdk.java.net/browse/JDK-8217364) | openjdk/jdk         |
+| jdk10     | [jdk-8206965](https://bugs.openjdk.java.net/browse/JDK-8206965) | openjdk/jdk         |
+| jdk17     | [jdk-8059269](https://bugs.openjdk.java.net/browse/JDK-8059269) | openjdk/jdk         |
+| jdk19     | [jdk-8048020](https://bugs.openjdk.java.net/browse/JDK-8048020) | openjdk/jdk         |
+| derby2    | [derby-3887](https://issues.apache.org/jira/browse/DERBY-3887) | apache/derby        |
+| derby3    | [derby-6880](https://issues.apache.org/jira/browse/DERBY-6880) | apache/derby        |
+| derby5    | [derby-6692](https://issues.apache.org/jira/browse/DERBY-6692) | apache/derby        |
+| derby8    | [derby-4910](https://issues.apache.org/jira/browse/DERBY-4910) | apache/derby        |
+| derby11   | [derby-4671](https://issues.apache.org/jira/browse/DERBY-4671) | apache/derby        |
+| derby1    | [derby-4193](https://issues.apache.org/jira/browse/DERBY-4193) | apache/derby        |
+| lucene1   | [lucene-621](https://issues.apache.org/jira/browse/LUCENE-621) | apache/lucene-solr  |
+| dbcp1     | [dbcp-415](https://issues.apache.org/jira/browse/DBCP-415)   | apache/commons-dbcp |
+| flink1    | [flink-17514](https://issues.apache.org/jira/browse/FLINK-17514) | apache/flink        |
 
 ## The bugs
 
