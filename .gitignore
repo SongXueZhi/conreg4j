@@ -1,2 +1,8 @@
 /dist/
 /build/
+/.project
+/build.xml
+/.classpath
+/nbproject/
+/mainfext.mf
+/database/
