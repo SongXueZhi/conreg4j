@@ -6,6 +6,7 @@
 package conrebd;
 
 import conrebd.cli.Navigation;
+import conrebd.docker.DockerExecutor;
 
 /**
  *
@@ -26,7 +27,7 @@ public class AppEnter {
         ConReDB.initDB();
 
         System.out.println(LOGO);
-        System.out.println("Start successful ");
+  
         //启动cli模块
         try {
             Navigation.main(args);

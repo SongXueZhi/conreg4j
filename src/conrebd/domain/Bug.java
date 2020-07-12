@@ -14,22 +14,22 @@ import java.util.List;
  */
 public class Bug {
 
-
     private String bugID;
     private String author;
-    private String testCase;
+    private String nature;
     private String rootCause;
-    private String docker;
-
+     private String rootFixed;
+    private String testCases;
     private List<Entry> entrys;
 
-    public Bug(String bugID, String author, String testcase,String rootCause,String docker,List<Entry> entrys) {
+    public Bug(String bugID, String author,String nature,String rootCause,String rootFixed,String testCases,List<Entry> entrys) {
         this.bugID = bugID;
         this.author = author;
         this.entrys = entrys;
-        this.docker=docker;
         this.rootCause=rootCause;
-        this.testCase=testcase;
+        this.testCases=testCases;
+        this.nature=nature;
+        this.rootFixed=rootFixed;   
     }
 
     /**
@@ -87,33 +87,6 @@ public class Bug {
     }
 
     /**
-     * @return the testCase
-     */
-    public String getTestCase() {
-        return testCase;
-    }
-
-    /**
-     * @param testCase the testCase to set
-     */
-    public void setTestCase(String testCase) {
-        this.testCase = testCase;
-    }
-        /**
-     * @return the docker
-     */
-    public String getDocker() {
-        return docker;
-    }
-
-    /**
-     * @param docker the docker to set
-     */
-    public void setDocker(String docker) {
-        this.docker = docker;
-    }
-
-    /**
      * @return the rootCause
      */
     public String getRootCause() {
@@ -127,4 +100,45 @@ public class Bug {
         this.rootCause = rootCause;
     }
 
+    /**
+     * @return the testCases
+     */
+    public String getTestCases() {
+        return testCases;
+    }
+
+    /**
+     * @param testCases the testCases to set
+     */
+    public void setTestCases(String testCases) {
+        this.testCases = testCases;
+    }
+
+    /**
+     * @return the nature
+     */
+    public String getNature() {
+        return nature;
+    }
+
+    /**
+     * @param nature the nature to set
+     */
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+
+       /**
+     * @return the rootFixed
+     */
+    public String getRootFixed() {
+        return rootFixed;
+    }
+
+    /**
+     * @param rootFixed the rootFixed to set
+     */
+    public void setRootFixed(String rootFixed) {
+        this.rootFixed = rootFixed;
+    }
 }

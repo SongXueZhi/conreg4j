@@ -15,57 +15,73 @@ import java.util.Map;
  *
  * @author knightsong
  */
-public class DockerExecutor extends Executor{
+public class DockerExecutor extends Executor {
+    private static ProcessBuilder pb =new ProcessBuilder();
+	// .sh file is stored in this folder
+	private final static String SCRIPTS_FOLDER = "scripts";
 
-    //.sh file is stored in this folder
-    private final static String SCRIPTS_FOLDER = "scripts";
+	private final static String BASH="bash";
 
-    private final static String DOCKER_BASH = "bash";
+	public static String DOCKER_JAVA_PLAIN_CONTAINER_ID = "conreg4j-java-plain";
 
-    private static String DOCKER_CONTAINER_ID = "9da42e4c7cd4";
+	private final static String DOCKER_EXEC_BASED_CMD = "docker exec";
 
-    private final static String DOCKER_EXEC_BASED_CMD = "docker exec";
+	public void runPrintln(String arg) {
+		String cmd = DOCKER_EXEC_BASED_CMD + " " +""+ DOCKER_JAVA_PLAIN_CONTAINER_ID + " " +BASH+" -c '"
+				 + arg+"'";
+		execPrintln(cmd, pb);
+	}
+	
+	public void runTest(String arg) {
+		String cmd = DOCKER_EXEC_BASED_CMD +" "+ DOCKER_JAVA_PLAIN_CONTAINER_ID + " "+"bash " 
+				+ File.separator+SCRIPTS_FOLDER + File.separator + arg;
+		execPrintln(cmd, pb);
+	}
 
-    private final static String DOCKER_EXEC_StART_CMD = "docker start";
+	public String execPrintln(String cmd, ProcessBuilder pb) {
+		StringBuffer sb = new StringBuffer();
+		try {
+			pb.command("bash", "-c", cmd);
+			Process process = pb.start();
+			InputStreamReader inputStr = new InputStreamReader(process.getInputStream());
+			BufferedReader bufferReader = new BufferedReader(inputStr);
+			String line;
+			while ((line = bufferReader.readLine()) != null) {
+				System.out.println(line);
 
-    private final static String DOCKER_EXEC_COPY_CMD = "docker cp";
+			}
+		} catch (Exception ex) {
+		}
+		return sb.toString();
+	}
+	public String run(String arg) {
+		String cmd = DOCKER_EXEC_BASED_CMD + " " +""+ DOCKER_JAVA_PLAIN_CONTAINER_ID + " " +BASH+" -c '"
+				 + arg+"'";
+		return exec(cmd, pb);
+	}
+	public String exec(String cmd, ProcessBuilder pb) {
+		StringBuffer sb = new StringBuffer();
+		try {
+			pb.command("bash", "-c", cmd);
+			Process process = pb.start();
+			InputStreamReader inputStr = new InputStreamReader(process.getInputStream());
+			BufferedReader bufferReader = new BufferedReader(inputStr);
+			String line;
+			while ((line = bufferReader.readLine()) != null) {				
+				sb.append(line).append("\n");
+			}
+		} catch (Exception ex) {
+		}
+		return sb.toString();
+	}
+	
+	 public void setEnviroment(String args[]) {
 
-    public String run(String arg) {
-        ProcessBuilder pb = new ProcessBuilder();
-        Map<String, String> map = pb.environment();
-        String PATH = map.get("PATH")
-                + File.pathSeparator + "/Applications/Docker.app/Contents/Resources/bin";
-        StringBuffer sb = new StringBuffer("test in docker...");
-        map.put("PATH", PATH);
-//        sb.append(exec(DOCKER_EXEC_StART_CMD + " " + DOCKER_CONTAINER_ID, pb));
-        File file = new File(SCRIPTS_FOLDER + File.separator + arg);
-
-//        exec(DOCKER_EXEC_COPY_CMD + " " + file.getAbsolutePath() + " " + DOCKER_CONTAINER_ID + ":" + SCRIPTS_FOLDER, pb);
-//
-//        String initCmd = DOCKER_EXEC_BASED_CMD + " " + DOCKER_CONTAINER_ID + " " + DOCKER_BASH + " " + SCRIPTS_FOLDER + File.separator + "init.sh";
-//        sb.append(exec(initCmd, pb));
-
-        String cmd = DOCKER_EXEC_BASED_CMD + " " + DOCKER_CONTAINER_ID + " " + DOCKER_BASH + " " + SCRIPTS_FOLDER + File.separator + arg;
-        sb.append(exec(cmd, pb));
-
-        return sb.toString();
-    }
-
-    public String exec(String cmd, ProcessBuilder pb) {
-        StringBuffer sb = new StringBuffer();
-        try {
-            pb.command("bash", "-c", cmd);
-            Process process = pb.start();
-            InputStreamReader inputStr = new InputStreamReader(process.getInputStream());
-            BufferedReader bufferReader = new BufferedReader(inputStr);
-            String line;
-            while ((line = bufferReader.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (Exception ex) {
-
-//exec("/usr/local/bin/docker images");
-        }
-        return sb.toString();
-    }
+	        Map<String, String> map = pb.environment();
+	        StringBuilder PATH = new StringBuilder(map.get("PATH"));
+	        for (int i = 1; i < args.length; i++) {
+	            PATH.append(File.pathSeparator).append(args[i]);
+	        }
+	        map.put("PATH", PATH.toString());
+	    }
 }

@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.transform.Source;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -46,9 +46,18 @@ public class ConReDB {
                 Element bugItem = (Element) bugList.item(j);
                 String bugID = bugItem.getElementsByTagName(Constant.XML_BUG_ID_LABEL).item(0).getTextContent();
                 String author = bugItem.getElementsByTagName(Constant.XML_BUG_AUTHOR_LABEL).item(0).getTextContent();
-                String docker = bugItem.getElementsByTagName(Constant.XML_BUG_DOCKER).item(0).getTextContent();
-                String testCase = bugItem.getElementsByTagName(Constant.XML_BUG_TESTCASE).item(0).getTextContent();
-                String rootCause=bugItem.getElementsByTagName(Constant.XML_BUG_ROOT_CAUSE_LABEL).item(0).getTextContent();
+                Node natureNode =bugItem.getElementsByTagName(Constant.XML_BUG_NATURE).item(0);
+                String nature="";
+                if (natureNode!=null) {
+                    nature=natureNode.getTextContent();
+                }
+                String testCase=bugItem.getElementsByTagName(Constant.XML_BUG_TESTCASE).item(0).getTextContent();
+                String rootCause=getContentText(bugItem, Constant.XML_BUG_ROOT_CAUSE_LABEL);
+                Node rootFixedNode =bugItem.getElementsByTagName(Constant.XML_BUG_ROOT_FIXED_LABEL).item(0);
+                String rootFixed="";
+                if (rootFixedNode!=null) {
+                    rootFixed=rootFixedNode.getTextContent();
+                }
                 NodeList entryList = bugItem.getElementsByTagName(Constant.XML_ENTRY_LABEL);
                 if (entryList.getLength() < Constant.VERSION.length) {
                     try {
@@ -61,18 +70,26 @@ public class ConReDB {
                 for (int k = 0; k < Constant.VERSION.length; k++) {
                     Element entryItem = (Element) entryList.item(k);
                     String testCmd = entryItem.getElementsByTagName(Constant.XML_TEST_CMD_LABEL).item(0).getTextContent();
-//                    String buildCmd = entryItem.getElementsByTagName(Constant.XML_BUILD_CMD_LABEL).item(0).getTextContent();
                     String commit = entryItem.getElementsByTagName(Constant.XML_COMMIT_LABEL).item(0).getTextContent();
                     String version = entryItem.getElementsByTagName(Constant.XML_VRESION_LABEL).item(0).getTextContent();
-                    entrys.add(new Entry(version, testCmd, commit));
+                    String orignCommit= entryItem.getElementsByTagName(Constant.XML_ORIGNCOMMIT_LABEL).item(0).getTextContent();
+                    entrys.add(new Entry(version, testCmd, commit,orignCommit));
                 }
-                sir.addBug(new Bug(bugID, author,testCase,rootCause,docker,entrys));
+                sir.addBug(new Bug(bugID, author,nature,rootCause,rootFixed,testCase,entrys));
             }
             sirs.add(sir);
         }
         initSirBugMap();
     }
 
+    private static String getContentText(Element parent,String label) {
+    	Node target =parent.getElementsByTagName(label).item(0);
+    	String result="";
+        if (target!=null) {
+        	result=target.getTextContent();
+        }
+        return result;
+	}
     private static void initSirBugMap() {
         sirBugMap = new HashMap<>();
         sirs.forEach((sir) -> {

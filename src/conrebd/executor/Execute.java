@@ -37,7 +37,6 @@ public class Execute extends Executor {
             PATH.append(File.pathSeparator).append(args[i]);
         }
         map.put("PATH", PATH.toString());
-        map.put("JAVA_HOME", args[0]);
     }
 
     public void setDirectory(File file) {
@@ -128,7 +127,7 @@ public class Execute extends Executor {
         String tmp = line.replace('+', ' ').replace('-', ' ').replace(" ", "");
         for (String s : causeList) {
             s=s.replace(" ", "");
-            if (tmp.equals(s) && s.toCharArray().length>2) {
+            if (tmp.equals(s) && s.toCharArray().length>=2) {
                 return true;
             }
         }

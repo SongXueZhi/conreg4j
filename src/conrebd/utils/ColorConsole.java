@@ -6,6 +6,7 @@
 package conrebd.utils;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
+import com.diogonunes.jcdp.color.api.Ansi;
 import com.diogonunes.jcdp.color.api.Ansi.BColor;
 
 
@@ -16,7 +17,7 @@ import com.diogonunes.jcdp.color.api.Ansi.BColor;
 public class ColorConsole {
     
     static ColoredPrinter cp = new ColoredPrinter.Builder(0, false)
-                .background(BColor.YELLOW) //setting format
+                .background(BColor.BLUE).foreground(Ansi.FColor.YELLOW) //setting format
                 .build();
 
  

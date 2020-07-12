@@ -15,17 +15,20 @@ public class Entry {
     private String testCmd;
     private String buildCmd;
     private String commit;
+    private String orignCommit;
+
     /**
-     * 
+     *
      * @param version
      * @param testCmd
      * @param buildCmd
-     * @param source 
+     * @param source
      */
-    public Entry(String version, String testCmd, String source) {
+    public Entry(String version, String testCmd, String commit, String orignCommit) {
         this.version = version;
         this.testCmd = testCmd;
-        this.commit = source;
+        this.commit = commit;
+        this.orignCommit = orignCommit;
     }
 
     public String test(String cmdLine) {
@@ -94,5 +97,19 @@ public class Entry {
      */
     public void setCommit(String source) {
         this.commit = source;
+    }
+
+    /**
+     * @return the orignCommit
+     */
+    public String getOrignCommit() {
+        return orignCommit;
+    }
+
+    /**
+     * @param orignCommit the orignCommit to set
+     */
+    public void setOrignCommit(String orignCommit) {
+        this.orignCommit = orignCommit;
     }
 }
