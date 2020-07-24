@@ -22,7 +22,7 @@ public class DockerExecutor extends Executor {
 
 	private final static String BASH="bash";
 
-	public static String DOCKER_JAVA_PLAIN_CONTAINER_ID = "conreg4j-java-plain";
+	public static String DOCKER_JAVA_PLAIN_CONTAINER_ID = "e38";
 
 	private final static String DOCKER_EXEC_BASED_CMD = "docker exec";
 

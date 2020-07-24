@@ -22,7 +22,7 @@ public class DockerServer {
 	private  final static String DOCKER_HOME="home";
 	
 	public String checkout(String sirName,String commitID) {
-		String cmd ="cd "+File.separator+DOCKER_HOME+File.separator+sirName+";git checkout "+commitID;
+		String cmd ="cd "+File.separator+DOCKER_HOME+File.separator+sirName+";git checkout -f "+commitID;
 		return dockerExecutor.run(cmd);
 	}
 	
