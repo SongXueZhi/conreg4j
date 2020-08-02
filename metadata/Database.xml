@@ -454,7 +454,7 @@
 			<id>groovy1</id>
 			<author>wqh</author>
 			<testcase>src.test.groovy.util.logging.Slf4jTest.groovy</testcase>
-			<rootcause>src/main/org/codehaus/groovy/classgen/VariableScopeVisitor.java,567,567</rootcause>
+			<rootcause>src/main/org/codehaus/groovy/classgen/VariableScopeVisitor.java,567,570</rootcause>
 			<entry>
 				<orign>c578be3e3b58b6429e820f74585f5647a590632e</orign>
 				<commit>3e8049d025bc9936884e222215249e135a75001e</commit>
@@ -463,7 +463,7 @@
 				<version>Working</version>
 			</entry>
 			<entry>
-				<orign>709e445d9967ac28b6869fb1949df20b1f953e7e</orign>
+				<orign>ce3b2f7886d99c4405194bbe04fc3dc134cd3227</orign>
 				<commit>adb22a99aa865ef59b9c4839e9f6e067120a5f6b</commit>
 				<testcmd>groovy-test1.sh
 				</testcmd>
@@ -546,7 +546,7 @@
 			<entry>
 				<orign>28bcbd0cf68a4e1820bc091a8be0417f060dd01c</orign>
 				<commit>e3853dd1629f37421f71cbc0687fa1169442edea</commit>
-				<testcmd>flink1-test.sh</testcmd>
+				<testcmd>flink1-working.sh</testcmd>
 				<version>Working</version>
 			</entry>
 			<entry>

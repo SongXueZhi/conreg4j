@@ -5,6 +5,9 @@
  */
 package test;
 
+import java.io.Console;
+
+import conrebd.domain.ConsoleColors;
 
 /**
  *
@@ -13,6 +16,6 @@ package test;
 public class PrintlnTest {
 
     public static void main(String[] args) {
-        System.out.println("Hello Conreg4j");
+        ConsoleColors.printlnc("songxuezhi", ConsoleColors.YELLOW);
     }
 }

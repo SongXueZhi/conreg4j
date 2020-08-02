@@ -1,0 +1,8 @@
+public static boolean isMetaspaceOutOfMemoryError(@Nullable Throwable t) {
+public static boolean isDirectOutOfMemoryError(@Nullable Throwable t) {
+private static boolean isOutOfMemoryErrorWithMessageStartingWith(@Nullable Throwable t, String prefix) {
+return isOutOfMemoryError(t) && t.getMessage() != null && t.getMessage().startsWith(prefix);
+}
+private static boolean isOutOfMemoryError(@Nullable Throwable t) {
+return t != null && t.getClass() == OutOfMemoryError.class;
+

@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/commons-io-2.6.jar"/>
 	<classpathentry kind="lib" path="libs/jna-5.5.0.jar"/>
 	<classpathentry kind="lib" path="libs/jna-platform-5.5.0.jar"/>
+	<classpathentry kind="lib" path="libs/junit-3.8.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

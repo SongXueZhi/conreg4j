@@ -6,6 +6,7 @@
 package conrebd;
 
 import java.io.File;
+import java.util.List;
 
 import com.sun.java.swing.plaf.gtk.resources.gtk_it;
 import com.sun.java_cup.internal.runtime.virtual_parse_stack;
@@ -28,6 +29,9 @@ public class DockerServer {
 	
 	public void runPrintln(String cmd) {
 		 dockerExecutor.runPrintln(cmd);
+	}
+	public void runPrintln(String cmd,List<String> rootcause) {
+		 dockerExecutor.runPrintln(cmd,rootcause);
 	}
 	public String run(String cmd) {
 		return dockerExecutor.run(cmd);

@@ -180,11 +180,11 @@ public class ConReAction {
         System.out.println("CHANGE DETAILS:");
         if ((version1.equals("working") && version2.equals("regression")) || (version1.equals("regression") && version2.equals("working"))) {
             List<String> causeSet = null;
-//            		CodeUtils.getRootCause(rootCause, file.getAbsoluteFile() + File.separator + bugId);
-            dockerServer.runPrintln(cdCmd+";git diff " + commitID1 + " " + commitID2);
+            causeSet=CodeUtils.getRootCause(bugId);
+            dockerServer.runPrintln(cdCmd+";git diff " + commitID1 + " " + commitID2,causeSet);
         } else if ((version1.equals("~1") && version2.equals("fixed"))) {
-            List<String> causeSet = CodeUtils.getRootFixed();
-            dockerServer.runPrintln(cdCmd+";git diff " + commitID1 + " " + commitID2);
+            List<String> causeSet = CodeUtils.getRootFixed(bugId);
+            dockerServer.runPrintln(cdCmd+";git diff " + commitID1 + " " + commitID2,causeSet);
         } else {
         	dockerServer.runPrintln(cdCmd+";git diff " + commitID1 + " " + commitID2);
         }
