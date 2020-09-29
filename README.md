@@ -13,7 +13,6 @@ ConReg4J contains 20  real-world bugs from the following open-source projects:
 | Bug index | Identifier                                                   | Project name        |
 | --------- | ------------------------------------------------------------ | ------------------- |
 | pool1     | [pool-376](https://issues.apache.org/jira/browse/POOL-376)   | apache/commons-pool |
-| groovy1   | [groovy-6873](https://issues.apache.org/jira/browse/GROOVY-6873) | apache/groovy       |
 | jdk1      | [jdk-8217606](https://bugs.openjdk.java.net/browse/JDK-8217606) | openjdk/jdk         |
 | jdk2      | [jdk-8068184](https://bugs.openjdk.java.net/browse/JDK-8068184) | openjdk/jdk         |
 | jdk3      | [jdk-8237368](https://bugs.openjdk.java.net/browse/JDK-8237368) | openjdk/jdk         |
@@ -32,6 +31,7 @@ ConReg4J contains 20  real-world bugs from the following open-source projects:
 | lucene1   | [lucene-621](https://issues.apache.org/jira/browse/LUCENE-621) | apache/lucene-solr  |
 | dbcp1     | [dbcp-415](https://issues.apache.org/jira/browse/DBCP-415)   | apache/commons-dbcp |
 | flink1    | [flink-17514](https://issues.apache.org/jira/browse/FLINK-17514) | apache/flink        |
+| groovy1   | [groovy-6873](https://issues.apache.org/jira/browse/GROOVY-6873) | apache/groovy       |
 
 ## The bugs
 
