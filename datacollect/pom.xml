@@ -13,5 +13,10 @@
 			<artifactId>org.eclipse.jgit</artifactId>
 			<version>5.9.0.202009080501-r</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+			<version>3.20.0</version>
+		</dependency>
 	</dependencies>
 </project>

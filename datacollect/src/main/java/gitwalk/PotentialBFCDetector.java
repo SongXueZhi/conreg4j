@@ -27,7 +27,7 @@ public class PotentialBFCDetector {
 
 		// 获取所有的commit，我们需要对所有的commit进行分析
 		Iterable<RevCommit> commits = git.log().all().call();
-
+		long time1=System.currentTimeMillis();
 		// 开始迭代每一个commit
 		for (RevCommit commit : commits) {
 			// 1)首先我们将记录所有的标题中包含fix的commti
@@ -52,15 +52,15 @@ public class PotentialBFCDetector {
 					/**
 					 * 针对只标题只包含fix但是修改的文件路径中没有测试用例的提交 我们将在(c-3,c+3) 的范围内检索可能的测试用例 [TODO] 测试用例与测试方法对其
 					 */
-					List<PotentialTestCase> pls = findTestCommit(commit, repo);
-					if (pls.size() > 0) {
+//					List<PotentialTestCase> pls = findTestCommit(commit, repo);
+//					if (pls.size() > 0) {
 //								PotentialRFC pRFC = new PotentialRFC(commit.getName());
 //								pRFC.setNormalJavaFiles(normalJavaFiles);
 //								pRFC.setPotentialTestcases(pls);
 //								pRFC.setPriority(Priority.middle);
-						potenTestFix++;
-						// potentialRFCs.add(pRFC);
-					}
+//								potenTestFix++;
+//								potentialRFCs.add(pRFC);
+//					}
 				}
 			}
 
@@ -68,6 +68,7 @@ public class PotentialBFCDetector {
 		}
 		System.out.println("总共分析了" + countAll + "条commit\n" + "其中标题中包含Fix的commit有：" + countLablecontainFix
 				+ "\n标题包含Fix且不仅只修改了test： " + countNotOnlyTest + "\n存在潜在测试用例的fix" + potenTestFix);
+		System.out.println("总耗时 ：" +(System.currentTimeMillis()-time1)/1000);
 		return potentialRFCs;
 	}
 
