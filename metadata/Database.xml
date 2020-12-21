@@ -347,7 +347,7 @@
 			</entry>
 			<entry>
 				<orign>aa302c30bc69cb120be583bf9011f942df7c07c3</orign>
-				<commit>b34d78d8df1ca18648a216d26121e68cb18f6f51</commit>
+				<commit>2e8abd97f51cac749983804e61bb7fe5ad9c7738</commit>
 				<testcmd>
 				derby5-test.sh
 				</testcmd>

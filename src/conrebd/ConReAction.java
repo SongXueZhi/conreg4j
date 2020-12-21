@@ -47,43 +47,43 @@ public class ConReAction {
         return res.toArray(new String[res.size()]);
     }
 
-    public boolean pullBug(String bugID, String version) throws Exception {
-
-        Bug bug = ConReDB.getBug(bugID);
-        String source = ConReDB.getSIR(ConReDB.getSirName(bugID)).getSource();
-        Entry entry = bug.getEntry(version);
-        String commitID = entry.getCommit();
-
-        // SIR Direcotry sirPath
-        String sirPath = Utils.checkFile(ConReDB.getSirName(bugID));
-
-        //1. confirm meta code existing 
-        File meta = Utils.checkContainsMeta(sirPath);
-        if (meta == null) {
-            System.out.println("Dowanload source code....");
-            System.out.println("May need long time");
-            // pull meta data
-            int a = localServer.pull(sirPath, source);
-            if (a == 0) {
-                System.out.println("Download success");
-                meta = new File(sirPath + File.separator + Utils.META_STRING);
-            } else {
-                System.out.println("Download failed");
-            }
-
-        }
-        //2. meta have existed
-        //bugID Files and copy meta to version directory
-        File target = new File(sirPath + File.separator + bugID + File.separator + version);
-        if (!target.exists()) {
-            target.mkdirs();
-        }
-        //a.copy meta to version
-        FileUtils.copyDirectory(meta, target);
-        //b.checkout commitID
-        localServer.checkout(target, commitID);
-        return true;
-    }
+//    public boolean pullBug(String bugID, String version) throws Exception {
+//
+//        Bug bug = ConReDB.getBug(bugID);
+//        String source = ConReDB.getSIR(ConReDB.getSirName(bugID)).getSource();
+//        Entry entry = bug.getEntry(version);
+//        String commitID = entry.getCommit();
+//
+//        // SIR Direcotry sirPath
+//        String sirPath = Utils.checkFile(ConReDB.getSirName(bugID));
+//
+//        //1. confirm meta code existing 
+//        File meta = Utils.checkContainsMeta(sirPath);
+//        if (meta == null) {
+//            System.out.println("Dowanload source code....");
+//            System.out.println("May need long time");
+//            // pull meta data
+//            int a = localServer.pull(sirPath, source);
+//            if (a == 0) {
+//                System.out.println("Download success");
+//                meta = new File(sirPath + File.separator + Utils.META_STRING);
+//            } else {
+//                System.out.println("Download failed");
+//            }
+//
+//        }
+//        //2. meta have existed
+//        //bugID Files and copy meta to version directory
+//        File target = new File(sirPath + File.separator + bugID + File.separator + version);
+//        if (!target.exists()) {
+//            target.mkdirs();
+//        }
+//        //a.copy meta to version
+//        FileUtils.copyDirectory(meta, target);
+//        //b.checkout commitID
+//        localServer.checkout(target, commitID);
+//        return true;
+//    }
     
     
     public String pullBug(String bugID) throws Exception {
@@ -95,6 +95,7 @@ public class ConReAction {
         String commitId =ConReDB.getBug(bugId).getEntry(version).getOrignCommit();
         String cdCmd="cd "+File.separator+"home"+File.separator+SIRName;
         return dockerServer.run(cdCmd+";git show "+commitId+"  --name-only");
+        
     }
 
     public String info(String bugId) throws Exception {
