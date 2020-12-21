@@ -4,6 +4,7 @@ import java.util.List;
 
 public class PotentialRFC {
 	private String id;
+	private int priority;
 	private List<String> normalJavaFiles;
 	private List<String> testCaseFiles;
 	private List<PotentialTestCase> potentialTestcases;
@@ -41,6 +42,12 @@ public class PotentialRFC {
 
 	public void setPotentialTestcases(List<model.PotentialTestCase> potentialTestcases) {
 		this.potentialTestcases = potentialTestcases;
+	}
+	public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 }
