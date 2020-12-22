@@ -2,37 +2,40 @@ package model;
 
 import java.util.List;
 
+import org.eclipse.jgit.lib.ObjectId;
+
 public class PotentialRFC {
-	private String id;
+	private ObjectId id;
 	private int priority;
-	private List<String> normalJavaFiles;
-	private List<String> testCaseFiles;
+	private List<ChangedFile> normalJavaFiles;
+	private List<ChangedFile> testCaseFiles;
 	private List<PotentialTestCase> potentialTestcases;
 
-	public PotentialRFC(String id){
-		this.id=id;
-	}
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
+	public PotentialRFC(ObjectId id) {
 		this.id = id;
 	}
 
-	public List<String> getNormalJavaFiles() {
+	public ObjectId getId() {
+		return id;
+	}
+
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+
+	public List<ChangedFile> getNormalJavaFiles() {
 		return normalJavaFiles;
 	}
 
-	public void setNormalJavaFiles(List<String> normalJavaFiles) {
+	public void setNormalJavaFiles(List<ChangedFile> normalJavaFiles) {
 		this.normalJavaFiles = normalJavaFiles;
 	}
 
-	public List<String> getTestCaseFiles() {
+	public List<ChangedFile> getTestCaseFiles() {
 		return testCaseFiles;
 	}
 
-	public void setTestCaseFiles(List<String> testCaseFiles) {
+	public void setTestCaseFiles(List<ChangedFile> testCaseFiles) {
 		this.testCaseFiles = testCaseFiles;
 	}
 
@@ -43,9 +46,11 @@ public class PotentialRFC {
 	public void setPotentialTestcases(List<model.PotentialTestCase> potentialTestcases) {
 		this.potentialTestcases = potentialTestcases;
 	}
+
 	public int getPriority() {
 		return priority;
 	}
+
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}

@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-public class MenberRetriever extends ASTVisitor{
+public class MemberRetriever extends ASTVisitor{
 	private ArrayList<ASTNode> nodeList = new ArrayList<>();
 
 //	public boolean visit(TypeDeclaration type) {
@@ -29,7 +29,6 @@ public class MenberRetriever extends ASTVisitor{
 //	}
 
 	public boolean visit(MethodDeclaration method) {
-	
 		this.nodeList.add(method);
 		return false;
 	}

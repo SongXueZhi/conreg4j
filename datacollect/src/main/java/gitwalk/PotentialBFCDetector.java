@@ -12,8 +12,10 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
+import model.ChangedFile;
 import model.PotentialRFC;
 import model.PotentialTestCase;
+import constant.FileType;
 import constant.Priority;
 
 public class PotentialBFCDetector {
@@ -39,10 +41,10 @@ public class PotentialBFCDetector {
 				 * 中包含测试用例。 2）若所有路径中除了测试用例还包含其他的非测试用例的文件则commit符合条件
 				 **/
 				List<String> files = getLastDiffFiles(commit, repo);
-				List<String> testcaseFiles = getTestFiles(files);
-				List<String> normalJavaFiles = getNormalJavaFiles(files);
+				List<ChangedFile> testcaseFiles = getTestFiles(files);
+				List<ChangedFile> normalJavaFiles = getNormalJavaFiles(files);
 				if (testcaseFiles.size() > 0 && normalJavaFiles.size() > 0) {
-					PotentialRFC pRFC = new PotentialRFC(commit.getName());
+					PotentialRFC pRFC = new PotentialRFC(commit.getId());
 					pRFC.setTestCaseFiles(testcaseFiles);
 					pRFC.setNormalJavaFiles(normalJavaFiles);
 					pRFC.setPriority(Priority.high);
@@ -154,14 +156,15 @@ public class PotentialBFCDetector {
 	 * @param files
 	 * @return
 	 */
-	public List<String> getTestFiles(List<String> files) {
-		List<String> testFiles = new ArrayList<>();
+	public List<ChangedFile> getTestFiles(List<String> files) {
+		List<ChangedFile> testFiles = new ArrayList<>();
 		for (String str : files) {
 			String[] strings = str.toLowerCase().split("/");
 			if (strings.length > 0) {
 				// 存在路径中包含test的Java文件，即测试用例
 				if (str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					testFiles.add(str);
+					ChangedFile file =new ChangedFile(str, FileType.test);
+					testFiles.add(file);
 				}
 			}
 		}
@@ -171,14 +174,15 @@ public class PotentialBFCDetector {
 	/**
 	 * 获取所有普通文件
 	 */
-	public List<String> getNormalJavaFiles(List<String> files) {
-		List<String> normalJavaFiles = new ArrayList<>();
+	public List<ChangedFile> getNormalJavaFiles(List<String> files) {
+		List<ChangedFile> normalJavaFiles = new ArrayList<>();
 		for (String str : files) {
 			String[] strings = str.split("/");
 			if (strings.length > 0) {
 				// 存在非测试用例的Java文件
 				if (!str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					normalJavaFiles.add(str);
+					ChangedFile file =new ChangedFile(str,FileType.normal);
+					normalJavaFiles.add(file);
 				}
 			}
 		}
