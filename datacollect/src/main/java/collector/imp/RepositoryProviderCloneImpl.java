@@ -1,11 +1,11 @@
-package gitwalk.iml;
+package collector.imp;
 
 import java.io.File;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
 
-import gitwalk.api.RepositoryProvider;
+import collector.api.RepositoryProvider;
 
 public class RepositoryProviderCloneImpl implements RepositoryProvider {
 

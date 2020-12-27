@@ -1,4 +1,4 @@
-package gitwalk.api;
+package collector.api;
 
 import org.eclipse.jgit.lib.Repository;
 

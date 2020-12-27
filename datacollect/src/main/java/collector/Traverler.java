@@ -1,4 +1,4 @@
-package gitwalk;
+package collector;
 
 
 import java.nio.channels.NonReadableChannelException;

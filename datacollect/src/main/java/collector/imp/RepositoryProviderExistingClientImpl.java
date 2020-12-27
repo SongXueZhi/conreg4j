@@ -1,9 +1,9 @@
-package gitwalk.iml;
+package collector.imp;
 
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 
-import gitwalk.api.RepositoryProvider;
+import collector.api.RepositoryProvider;
 
 public class RepositoryProviderExistingClientImpl implements RepositoryProvider {
 

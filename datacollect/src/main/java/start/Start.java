@@ -3,8 +3,8 @@ package start;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
 
-import gitwalk.PotentialBICDetector;
-import gitwalk.Provider;
+import collector.PotentialBICDetector;
+import collector.Provider;
 
 public class Start {
 

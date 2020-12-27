@@ -1,10 +1,10 @@
-package gitwalk;
+package collector;
 
 
+import collector.api.RepositoryProvider;
+import collector.imp.RepositoryProviderCloneImpl;
+import collector.imp.RepositoryProviderExistingClientImpl;
 import constant.Configuration;
-import gitwalk.api.RepositoryProvider;
-import gitwalk.iml.RepositoryProviderCloneImpl;
-import gitwalk.iml.RepositoryProviderExistingClientImpl;
 
 public class Provider {
 	public static final int EXISITING = 0;
