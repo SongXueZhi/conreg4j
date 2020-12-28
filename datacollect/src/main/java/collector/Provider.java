@@ -12,11 +12,11 @@ public class Provider {
 
 	public RepositoryProvider create(int providerType) {
 		if (providerType==EXISITING) {
-			return new RepositoryProviderExistingClientImpl(Configuration.LOCAL_PROJECT);
+			return new RepositoryProviderExistingClientImpl();
 		}else if (providerType == CLONE) {
-			return new RepositoryProviderCloneImpl(Configuration.CLONE_URL,Configuration.LOCAL_PATH);
+			return new RepositoryProviderCloneImpl(Configuration.CLONE_URL);
 		}else {
-			return new RepositoryProviderExistingClientImpl(Configuration.LOCAL_PROJECT);
+			return new RepositoryProviderExistingClientImpl();
 		}
 	}
 }

@@ -1,16 +1,27 @@
 package collector;
 
+import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.diff.Edit;
+import org.eclipse.jgit.errors.CorruptObjectException;
+import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.patch.FileHeader;
+import org.eclipse.jgit.patch.HunkHeader;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import model.ChangedFile;
 import model.PotentialRFC;
@@ -29,7 +40,7 @@ public class PotentialBFCDetector {
 
 		// 获取所有的commit，我们需要对所有的commit进行分析
 		Iterable<RevCommit> commits = git.log().all().call();
-		long time1=System.currentTimeMillis();
+		long time1 = System.currentTimeMillis();
 		// 开始迭代每一个commit
 		for (RevCommit commit : commits) {
 			// 1)首先我们将记录所有的标题中包含fix的commti
@@ -40,7 +51,7 @@ public class PotentialBFCDetector {
 				 * 针对标题包含fix的commit我们进一步分析本次提交修改的文件路径 1）若所有路径中存在任意一个路径包含test相关的Java文件则我们认为本次提交
 				 * 中包含测试用例。 2）若所有路径中除了测试用例还包含其他的非测试用例的文件则commit符合条件
 				 **/
-				List<String> files = getLastDiffFiles(commit, repo);
+				List<ChangedFile> files = getLastDiffFiles(commit, repo);
 				List<ChangedFile> testcaseFiles = getTestFiles(files);
 				List<ChangedFile> normalJavaFiles = getNormalJavaFiles(files);
 				if (testcaseFiles.size() > 0 && normalJavaFiles.size() > 0) {
@@ -70,7 +81,7 @@ public class PotentialBFCDetector {
 		}
 		System.out.println("总共分析了" + countAll + "条commit\n" + "其中标题中包含Fix的commit有：" + countLablecontainFix
 				+ "\n标题包含Fix且不仅只修改了test： " + countNotOnlyTest + "\n存在潜在测试用例的fix" + potenTestFix);
-		System.out.println("总耗时 ：" +(System.currentTimeMillis()-time1)/1000);
+		System.out.println("总耗时 ：" + (System.currentTimeMillis() - time1) / 1000);
 		return potentialRFCs;
 	}
 
@@ -82,8 +93,8 @@ public class PotentialBFCDetector {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getLastDiffFiles(RevCommit commit, Repository repository) throws Exception {
-		List<String> files = new ArrayList<>();
+	public List<ChangedFile> getLastDiffFiles(RevCommit commit, Repository repository) throws Exception {
+		List<ChangedFile> files = new ArrayList<>();
 		ObjectId id = commit.getTree().getId();
 		ObjectId oldId = commit.getParent(0).getTree().getId();
 		try (ObjectReader reader = repository.newObjectReader()) {
@@ -95,11 +106,25 @@ public class PotentialBFCDetector {
 			try (Git git = new Git(repository)) {
 				List<DiffEntry> diffs = git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
 				for (DiffEntry entry : diffs) {
-					files.add(entry.getNewPath());
+					ChangedFile file = new ChangedFile(entry.getNewPath());
+					file.setEditList(getEdits(entry));
 				}
 			}
 		}
 		return files;
+	}
+
+	public List<Edit> getEdits(DiffEntry entry) throws Exception {
+		List<Edit> result = new ArrayList<Edit>();
+		try (DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
+			FileHeader fileHeader = diffFormatter.toFileHeader(entry);
+			List<? extends HunkHeader> hunkHeaders = fileHeader.getHunks();
+			for (HunkHeader hunk : hunkHeaders) {
+				result.addAll(hunk.toEditList());
+			}
+		}
+		return result;
+
 	}
 
 	/**
@@ -156,14 +181,15 @@ public class PotentialBFCDetector {
 	 * @param files
 	 * @return
 	 */
-	public List<ChangedFile> getTestFiles(List<String> files) {
+	public List<ChangedFile> getTestFiles(List<ChangedFile> files) {
 		List<ChangedFile> testFiles = new ArrayList<>();
-		for (String str : files) {
+		for (ChangedFile file : files) {
+			String str = file.getNewPath();
 			String[] strings = str.toLowerCase().split("/");
 			if (strings.length > 0) {
 				// 存在路径中包含test的Java文件，即测试用例
 				if (str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					ChangedFile file =new ChangedFile(str, FileType.test);
+					file.setType(constant.FileType.test);
 					testFiles.add(file);
 				}
 			}
@@ -174,14 +200,15 @@ public class PotentialBFCDetector {
 	/**
 	 * 获取所有普通文件
 	 */
-	public List<ChangedFile> getNormalJavaFiles(List<String> files) {
+	public List<ChangedFile> getNormalJavaFiles(List<ChangedFile> files) {
 		List<ChangedFile> normalJavaFiles = new ArrayList<>();
-		for (String str : files) {
+		for (ChangedFile file : files) {
+			String str = file.getNewPath();
 			String[] strings = str.split("/");
 			if (strings.length > 0) {
 				// 存在非测试用例的Java文件
 				if (!str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					ChangedFile file =new ChangedFile(str,FileType.normal);
+					file.setType(constant.FileType.normal);
 					normalJavaFiles.add(file);
 				}
 			}
@@ -195,9 +222,9 @@ public class PotentialBFCDetector {
 	 * @param files
 	 * @return
 	 */
-	public boolean justNormalJavaFile(List<String> files) {
-		for (String str : files) {
-			str = str.toLowerCase();
+	public boolean justNormalJavaFile(List<ChangedFile> files) {
+		for (ChangedFile file : files) {
+			String str = file.getNewPath().toLowerCase();
 			// 如果有一个文件路径中不包含test
 			// 便立即返回false
 			if (str.contains("test")) {

@@ -9,7 +9,7 @@ import collector.Provider;
 public class Start {
 
 	public static void main(String[] args) throws Exception {
-		try (Repository repo = new Provider().create(Provider.EXISITING).get()) {
+		try (Repository repo = new Provider().create(Provider.EXISITING).get(constant.Configuration.LOCAL_PATH)) {
 			try (Git git = new Git(repo)) {
 				PotentialBICDetector pBICDetector = new PotentialBICDetector();
 				pBICDetector.detectPBIC(repo, git);

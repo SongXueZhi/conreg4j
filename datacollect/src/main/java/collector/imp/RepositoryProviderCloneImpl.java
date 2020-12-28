@@ -10,12 +10,10 @@ import collector.api.RepositoryProvider;
 public class RepositoryProviderCloneImpl implements RepositoryProvider {
 
 	private String repoPath;
-    private String clientPath;
-    public RepositoryProviderCloneImpl(String repoPath, String clientPath) {
+    public RepositoryProviderCloneImpl(String repoPath) {
         this.repoPath = repoPath;
-        this.clientPath = clientPath;
     }
-    public Repository get() throws Exception {
+    public Repository get(String clientPath) throws Exception {
         File client = new File(clientPath);
         client.mkdir();
         try (Git result = Git.cloneRepository()

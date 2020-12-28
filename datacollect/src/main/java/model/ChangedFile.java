@@ -2,16 +2,30 @@ package model;
 
 import java.util.List;
 
+import org.eclipse.jgit.diff.Edit;
+
 public class ChangedFile {
 	private String newPath;
 	private List<Method> methods;
+	private List<Edit> editList;
 	private int type;
+	
+	public ChangedFile(String newPath) {
+		this.newPath = newPath;
+	}
 
 	public ChangedFile(String newPath, int type) {
 		this.newPath = newPath;
 		this.type = type;
 	}
+	
+	public List<Edit> getEditList() {
+		return editList;
+	}
 
+	public void setEditList(List<Edit> editList) {
+		this.editList = editList;
+	}
 	public int getType() {
 		return type;
 	}
