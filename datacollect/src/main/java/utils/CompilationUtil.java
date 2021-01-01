@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import AST.MemberRetriever;
+import ast.MemberRetriever;
 import model.Method;
 
 public class CompilationUtil {
