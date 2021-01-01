@@ -15,11 +15,9 @@ public class PotentialBICDetector {
 		List<PotentialRFC> pRFCs = pBFCDetector.detectPotentialBFC(repository, git);
 
 		for (PotentialRFC pRFC : pRFCs) {
-			for (ChangedFile file : pRFC.getNormalJavaFiles()) {
-				Traverler traverler = new Traverler();
-				traverler.blame(file, repository, pRFC.getId());
+			Traverler traverler = new Traverler(repository);
+			traverler.getBlameGraph(pRFC);
 
-			}
 		}
 
 	}

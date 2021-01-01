@@ -43,7 +43,7 @@ public class TestDiffEntry {
 		repo = new Provider().create(Provider.EXISITING).get("/Users/knightsong/Documents/project/microbat/.git");
 		git = new Git(repo);
 	}
-
+	@Test
 	public void testBalme() throws GitAPIException, IOException {
 		BlameCommand blamer = new BlameCommand(repo);
 		 ObjectId commitID = repo.resolve("29817ec53dd7570bf5e73a59fb6a0d618551bebe");
@@ -71,18 +71,18 @@ public class TestDiffEntry {
 		RevWalk walk = new RevWalk(repo);
 		List<RevCommit> commitList = new ArrayList<>();
 		// 获取最近提交的两次记录
-		Iterable<RevCommit> commits = git.log().setMaxCount(3).call();
+		Iterable<RevCommit> commits = git.log().setMaxCount(4).call();
 		for (RevCommit commit : commits) {
 			commitList.add(commit);
 			System.out.println(commit.getFullMessage());
 			System.out.println(commit.getAuthorIdent().getWhen());
 
-			if (commitList.size() == 3) {
+			if (commitList.size() == 4) {
 				ObjectReader reader = repo.newObjectReader();
 				CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-				oldTreeIter.reset(reader, commitList.get(2).getTree().getId());
+				oldTreeIter.reset(reader, commitList.get(3).getTree().getId());
 				CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-				newTreeIter.reset(reader,commitList.get(1).getTree().getId());
+				newTreeIter.reset(reader,commitList.get(2).getTree().getId());
 				List<DiffEntry> diff = git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).setShowNameAndStatusOnly(true)
 						.call();
 
@@ -109,7 +109,6 @@ public class TestDiffEntry {
 						for (Edit edit : editList) {
 							subSize += edit.getEndA() - edit.getBeginA();
 							addSize += edit.getEndB() - edit.getBeginB();
-
 						}
 					}
 					System.out.println("addSize=" + addSize);

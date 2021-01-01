@@ -1,48 +1,56 @@
 package collector;
 
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jgit.api.BlameCommand;
 import org.eclipse.jgit.blame.BlameResult;
-import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.diff.Edit;
+import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-import model.CandidateSet;
+import model.BlameNode;
 import model.ChangedFile;
-import model.Method;
-import utils.CompilationUtil;
+import model.PotentialRFC;
 
 public class Traverler {
-	
-	public void blame(ChangedFile file,Repository repo,ObjectId objectId) {
-		try {
-			BlameCommand blamer = new BlameCommand(repo);
-			blamer.setStartCommit(objectId);
-	        blamer.setFilePath(file.getNewPath());
-	        BlameResult blame = blamer.call();
-	        blameAllMethods(blame, file.getNewPath());
-		} catch (Exception e) {
-	
-		}
-		
+
+	BlameCommand blamer;
+	final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-dd HH:mm");
+
+	public Traverler(Repository repo) {
+		blamer = new BlameCommand(repo);
 	}
 
-	public void blameAllMethods(BlameResult blame,String filePath) {
-		List<Method> methods = CompilationUtil.getAllMethod(filePath);
-		for (Method method : methods) {
-			blameMethodScope(blame, method.getStartLine(), method.getStopLine());
+	public List<BlameNode> getBlameGraph(PotentialRFC pRFC) throws Exception {
+		blamer.setStartCommit(pRFC.getId());
+		List<BlameNode> level1Nodes = new ArrayList<>();
+		for (ChangedFile file : pRFC.getNormalJavaFiles()) {
+			blamer.setFilePath(file.getNewPath());
+			BlameResult result = blamer.call();
+		
+			for (Edit edit : file.getEditList()) {
+				level1Nodes.addAll(blameEdit(edit, result));
+			}
 		}
+		return level1Nodes;
 	}
-	
-	public void blameMethodScope(BlameResult blame,int startLine,int endLine) {
-		CandidateSet candidateSet=new CandidateSet();
-		List<RevCommit> commits=new ArrayList<>();
-		for(int i=startLine;i<=endLine;i++) {
-		commits.add(blame.getSourceCommit(i));
+
+	public List<BlameNode> blameEdit(Edit edit,BlameResult result) {
+		List<BlameNode> nodes = new ArrayList<>();
+		if (edit.getType() != Edit.Type.REPLACE) {
+			System.out.println("not replace ");
+			return null;
 		}
-		candidateSet.setCandidateList(commits);
+		for (int i =edit.getBeginA()+1; i <= edit.getEndA(); i++) {
+			BlameNode node =new BlameNode();
+			node.setCommit(result.getSourceCommit(i));
+			node.setLine(result.getSourceLine(i));
+			nodes.add(node);
+		}
+		return nodes;
 	}
+
 }
