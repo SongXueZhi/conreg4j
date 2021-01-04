@@ -1,6 +1,7 @@
 package collector;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jgit.api.Git;
@@ -19,8 +20,10 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import constant.Priority;
 import model.ChangedFile;
+import model.NormalFile;
 import model.PotentialRFC;
 import model.PotentialTestCase;
+import model.TestFile;
 
 public class PotentialBFCDetector {
 
@@ -80,7 +83,7 @@ public class PotentialBFCDetector {
 	 * @throws Exception
 	 */
 	public List<ChangedFile> getLastDiffFiles(RevCommit commit) throws Exception {
-		List<ChangedFile> files = new ArrayList<>();
+		List<ChangedFile> files = new LinkedList<>();
 		ObjectId id = commit.getTree().getId();
 		ObjectId oldId = null;
 		if (commit.getParentCount() > 0) {
@@ -106,7 +109,7 @@ public class PotentialBFCDetector {
 	}
 
 	public List<Edit> getEdits(DiffEntry entry) throws Exception {
-		List<Edit> result = new ArrayList<Edit>();
+		List<Edit> result = new LinkedList<Edit>();
 		try (DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
 			diffFormatter.setRepository(repo);
 			FileHeader fileHeader = diffFormatter.toFileHeader(entry);
@@ -171,16 +174,16 @@ public class PotentialBFCDetector {
 	 * @param files
 	 * @return
 	 */
-	public List<ChangedFile> getTestFiles(List<ChangedFile> files) {
-		List<ChangedFile> testFiles = new ArrayList<>();
+	public List<TestFile> getTestFiles(List<ChangedFile> files) {
+		List<TestFile> testFiles = new LinkedList<>();
 		for (ChangedFile file : files) {
 			String str = file.getNewPath();
 			String[] strings = str.toLowerCase().split("/");
 			if (strings.length > 0) {
 				// 存在路径中包含test的Java文件，即测试用例
 				if (str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					file.setType(constant.FileType.test);
-					testFiles.add(file);
+					TestFile testfile = (TestFile) file;
+					testFiles.add(testfile);
 				}
 			}
 		}
@@ -190,16 +193,16 @@ public class PotentialBFCDetector {
 	/**
 	 * 获取所有普通文件
 	 */
-	public List<ChangedFile> getNormalJavaFiles(List<ChangedFile> files) {
-		List<ChangedFile> normalJavaFiles = new ArrayList<>();
+	public List<NormalFile> getNormalJavaFiles(List<ChangedFile> files) {
+		List<NormalFile> normalJavaFiles = new LinkedList<>();
 		for (ChangedFile file : files) {
 			String str = file.getNewPath();
 			String[] strings = str.split("/");
 			if (strings.length > 0) {
 				// 存在非测试用例的Java文件
 				if (!str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					file.setType(constant.FileType.normal);
-					normalJavaFiles.add(file);
+					NormalFile normalFile = (NormalFile) file;
+					normalJavaFiles.add(normalFile);
 				}
 			}
 		}
@@ -235,8 +238,8 @@ public class PotentialBFCDetector {
 		if (message1.contains("fix") || commit.getFullMessage().contains("Closes")) {
 			// 针对标题包含fix的commit我们进一步分析本次提交修改的文件路径
 			List<ChangedFile> files = getLastDiffFiles(commit);
-			List<ChangedFile> testcaseFiles = getTestFiles(files);
-			List<ChangedFile> normalJavaFiles = getNormalJavaFiles(files);
+			List<TestFile> testcaseFiles = getTestFiles(files);
+			List<NormalFile> normalJavaFiles = getNormalJavaFiles(files);
 			// 1）若所有路径中存在任意一个路径包含test相关的Java文件则我们认为本次提交中包含测试用例。
 			// 2）若所有路径中除了测试用例还包含其他的非测试用例的Java文件则commit符合条件
 			if (testcaseFiles.size() > 0 && normalJavaFiles.size() > 0) {

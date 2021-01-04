@@ -7,8 +7,8 @@ import org.eclipse.jgit.revwalk.RevCommit;
 public class PotentialRFC {
 	private RevCommit commit;
 	private int priority;
-	private List<ChangedFile> normalJavaFiles;
-	private List<ChangedFile> testCaseFiles;
+	private List<NormalFile> normalJavaFiles;
+	private List<TestFile> testCaseFiles;
 	private List<PotentialTestCase> potentialTestcases;
 
 	public PotentialRFC(RevCommit commit) {
@@ -23,19 +23,19 @@ public class PotentialRFC {
 		this.commit = commit;
 	}
 
-	public List<ChangedFile> getNormalJavaFiles() {
+	public List<NormalFile> getNormalJavaFiles() {
 		return normalJavaFiles;
 	}
 
-	public void setNormalJavaFiles(List<ChangedFile> normalJavaFiles) {
+	public void setNormalJavaFiles(List<NormalFile> normalJavaFiles) {
 		this.normalJavaFiles = normalJavaFiles;
 	}
 
-	public List<ChangedFile> getTestCaseFiles() {
+	public List<TestFile> getTestCaseFiles() {
 		return testCaseFiles;
 	}
 
-	public void setTestCaseFiles(List<ChangedFile> testCaseFiles) {
+	public void setTestCaseFiles(List<TestFile> testCaseFiles) {
 		this.testCaseFiles = testCaseFiles;
 	}
 

@@ -12,7 +12,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 import model.BlameNode;
-import model.ChangedFile;
+import model.NormalFile;
 import model.PotentialRFC;
 
 public class Traverler {
@@ -32,7 +32,7 @@ public class Traverler {
 		blamer.setStartCommit(BFCP.getId());
 
 		List<BlameNode> level1Nodes = new ArrayList<>();
-		for (ChangedFile file : pRFC.getNormalJavaFiles()) {
+		for (NormalFile file : pRFC.getNormalJavaFiles()) {
 			blamer.setFilePath(file.getOldPath());
 			BlameResult result = blamer.call();
 			for (Edit edit : file.getEditList()) {
