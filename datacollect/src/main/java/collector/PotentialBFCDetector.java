@@ -82,7 +82,12 @@ public class PotentialBFCDetector {
 	public List<ChangedFile> getLastDiffFiles(RevCommit commit) throws Exception {
 		List<ChangedFile> files = new ArrayList<>();
 		ObjectId id = commit.getTree().getId();
-		ObjectId oldId = commit.getParent(0).getTree().getId();
+		ObjectId oldId = null;
+		if (commit.getParentCount() > 0) {
+			oldId = commit.getParent(0).getTree().getId();
+		} else {
+			return null;
+		}
 		try (ObjectReader reader = repo.newObjectReader()) {
 			CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
 			oldTreeIter.reset(reader, oldId);
@@ -92,6 +97,7 @@ public class PotentialBFCDetector {
 			List<DiffEntry> diffs = git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
 			for (DiffEntry entry : diffs) {
 				ChangedFile file = new ChangedFile(entry.getNewPath());
+				file.setOldPath(entry.getOldPath());
 				file.setEditList(getEdits(entry));
 				files.add(file);
 			}
@@ -234,7 +240,7 @@ public class PotentialBFCDetector {
 			// 1）若所有路径中存在任意一个路径包含test相关的Java文件则我们认为本次提交中包含测试用例。
 			// 2）若所有路径中除了测试用例还包含其他的非测试用例的Java文件则commit符合条件
 			if (testcaseFiles.size() > 0 && normalJavaFiles.size() > 0) {
-				PotentialRFC pRFC = new PotentialRFC(commit.getId());
+				PotentialRFC pRFC = new PotentialRFC(commit);
 				pRFC.setTestCaseFiles(testcaseFiles);
 				pRFC.setNormalJavaFiles(normalJavaFiles);
 				pRFC.setPriority(Priority.high);

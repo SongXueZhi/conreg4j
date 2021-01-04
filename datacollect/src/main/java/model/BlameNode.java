@@ -5,6 +5,15 @@ import org.eclipse.jgit.revwalk.RevCommit;
 public class BlameNode {
 	RevCommit commit;
 	int line;
+	int[] pair;
+
+	public int[] getPair() {
+		return pair;
+	}
+
+	public void setPair(int[] pair) {
+		this.pair = pair;
+	}
 
 	public RevCommit getCommit() {
 		return commit;

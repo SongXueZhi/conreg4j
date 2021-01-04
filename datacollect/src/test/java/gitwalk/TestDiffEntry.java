@@ -4,12 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jgit.api.BlameCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.InitCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -40,30 +38,31 @@ public class TestDiffEntry {
 
 	@Before
 	public void InitCommand() throws Exception {
-		repo = new Provider().create(Provider.EXISITING).get("/Users/knightsong/Documents/project/microbat/.git");
+		repo = new Provider().create(Provider.EXISITING).get("D:\\document\\project\\Fruits\\.git");
 		git = new Git(repo);
 	}
+
 	@Test
 	public void testBalme() throws GitAPIException, IOException {
 		BlameCommand blamer = new BlameCommand(repo);
-		 ObjectId commitID = repo.resolve("29817ec53dd7570bf5e73a59fb6a0d618551bebe");
-			blamer.setStartCommit(commitID);
-	        blamer.setFilePath("microbat/src/main/microbat/codeanalysis/runtime/RunningInformation.java");
-	        BlameResult result = blamer.call();
+		ObjectId commitID = repo.resolve("76aa6966193286a383267251ece4e777386d43c2");
+		blamer.setStartCommit(commitID);
+		blamer.setFilePath("src/main/java/basket/fruits/Solution.java");
+		BlameResult result = blamer.call();
 
-	        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-dd HH:mm");
-	        final RawText rawText = result.getResultContents();
-			for (int i = 0; i < rawText.size(); i++) {
-				final PersonIdent sourceAuthor = result.getSourceAuthor(i);
-				final RevCommit sourceCommit = result.getSourceCommit(i);
-				System.out.println(sourceAuthor.getName() +
-						(sourceCommit != null ? " - " + DATE_FORMAT.format(((long)sourceCommit.getCommitTime())*1000) +
-								" - " + sourceCommit.getName() : "") +
-						": " + rawText.getString(i));
-			}
+		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-dd HH:mm");
+		final RawText rawText = result.getResultContents();
+		for (int i = 0; i < rawText.size(); i++) {
+			final PersonIdent sourceAuthor = result.getSourceAuthor(i);
+			final RevCommit sourceCommit = result.getSourceCommit(i);
+			System.out.println(sourceAuthor.getName()
+					+ (sourceCommit != null
+							? " - " + DATE_FORMAT.format(((long) sourceCommit.getCommitTime()) * 1000) + " - "
+									+ sourceCommit.getName()
+							: "")
+					+ ": " + rawText.getString(i));
 		}
-		
-	
+	}
 
 	@Test
 	public void testDff() throws Exception {
@@ -71,20 +70,20 @@ public class TestDiffEntry {
 		RevWalk walk = new RevWalk(repo);
 		List<RevCommit> commitList = new ArrayList<>();
 		// 获取最近提交的两次记录
-		Iterable<RevCommit> commits = git.log().setMaxCount(4).call();
+		Iterable<RevCommit> commits = git.log().setMaxCount(3).call();
 		for (RevCommit commit : commits) {
 			commitList.add(commit);
 			System.out.println(commit.getFullMessage());
 			System.out.println(commit.getAuthorIdent().getWhen());
 
-			if (commitList.size() == 4) {
+			if (commitList.size() == 3) {
 				ObjectReader reader = repo.newObjectReader();
 				CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-				oldTreeIter.reset(reader, commitList.get(3).getTree().getId());
+				oldTreeIter.reset(reader, commitList.get(2).getTree().getId());
 				CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-				newTreeIter.reset(reader,commitList.get(2).getTree().getId());
-				List<DiffEntry> diff = git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).setShowNameAndStatusOnly(true)
-						.call();
+				newTreeIter.reset(reader, commitList.get(1).getTree().getId());
+				List<DiffEntry> diff = git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter)
+						.setShowNameAndStatusOnly(true).call();
 
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				DiffFormatter df = new DiffFormatter(out);

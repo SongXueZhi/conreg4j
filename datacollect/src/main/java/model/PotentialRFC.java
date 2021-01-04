@@ -2,25 +2,25 @@ package model;
 
 import java.util.List;
 
-import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.revwalk.RevCommit;
 
 public class PotentialRFC {
-	private ObjectId id;
+	private RevCommit commit;
 	private int priority;
 	private List<ChangedFile> normalJavaFiles;
 	private List<ChangedFile> testCaseFiles;
 	private List<PotentialTestCase> potentialTestcases;
 
-	public PotentialRFC(ObjectId id) {
-		this.id = id;
+	public PotentialRFC(RevCommit commit) {
+		this.commit = commit;
 	}
 
-	public ObjectId getId() {
-		return id;
+	public RevCommit getCommit() {
+		return commit;
 	}
 
-	public void setId(ObjectId id) {
-		this.id = id;
+	public void setCommit(RevCommit commit) {
+		this.commit = commit;
 	}
 
 	public List<ChangedFile> getNormalJavaFiles() {

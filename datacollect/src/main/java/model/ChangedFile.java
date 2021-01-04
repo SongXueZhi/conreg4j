@@ -6,10 +6,19 @@ import org.eclipse.jgit.diff.Edit;
 
 public class ChangedFile {
 	private String newPath;
+	private String oldPath;
 	private List<Method> methods;
 	private List<Edit> editList;
 	private int type;
-	
+
+	public String getOldPath() {
+		return oldPath;
+	}
+
+	public void setOldPath(String oldPath) {
+		this.oldPath = oldPath;
+	}
+
 	public ChangedFile(String newPath) {
 		this.newPath = newPath;
 	}
@@ -18,7 +27,7 @@ public class ChangedFile {
 		this.newPath = newPath;
 		this.type = type;
 	}
-	
+
 	public List<Edit> getEditList() {
 		return editList;
 	}
@@ -26,6 +35,7 @@ public class ChangedFile {
 	public void setEditList(List<Edit> editList) {
 		this.editList = editList;
 	}
+
 	public int getType() {
 		return type;
 	}

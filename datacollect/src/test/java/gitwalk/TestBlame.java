@@ -29,7 +29,7 @@ public class TestBlame {
 		ObjectId id = repo.resolve("b0db7cfd5fb68987972e320f48cb3f47140297c0");
 		PotentialBFCDetector pBFCDetector = new PotentialBFCDetector(repo, git);
 		List<PotentialRFC> pRFCs = pBFCDetector.detectPotentialBFC();
-		ObjectId ids = pRFCs.get(0).getId();
+		ObjectId ids = pRFCs.get(0).getCommit().getId();
 		Assert.assertEquals(id, ids);
 
 	}
