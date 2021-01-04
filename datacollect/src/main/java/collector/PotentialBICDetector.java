@@ -11,13 +11,12 @@ import model.PotentialRFC;
 public class PotentialBICDetector {
 
 	public void detectPBIC(Repository repository, Git git) throws Exception {
-		PotentialBFCDetector pBFCDetector = new PotentialBFCDetector();
-		List<PotentialRFC> pRFCs = pBFCDetector.detectPotentialBFC(repository, git);
+		PotentialBFCDetector pBFCDetector = new PotentialBFCDetector(repository, git);
+		List<PotentialRFC> pRFCs = pBFCDetector.detectPotentialBFC();
 
 		for (PotentialRFC pRFC : pRFCs) {
 			Traverler traverler = new Traverler(repository);
 			traverler.getBlameGraph(pRFC);
-
 		}
 
 	}
