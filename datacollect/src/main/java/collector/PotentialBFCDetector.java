@@ -66,6 +66,9 @@ public class PotentialBFCDetector {
 		long time1 = System.currentTimeMillis();
 		// 开始迭代每一个commit
 		for (RevCommit commit : commits) {
+			if (!commit.getName().equals("4fb5d59c644a03c094bd4ecba562eab750815722")) {
+				continue;
+			}
 			detect(commit, potentialRFCs);
 			countAll++;
 		}
@@ -99,10 +102,7 @@ public class PotentialBFCDetector {
 			// finally get the list of changed files
 			List<DiffEntry> diffs = git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
 			for (DiffEntry entry : diffs) {
-				ChangedFile file = new ChangedFile(entry.getNewPath());
-				file.setOldPath(entry.getOldPath());
-				file.setEditList(getEdits(entry));
-				files.add(file);
+				getChangedFile(entry, files);
 			}
 		}
 		return files;
@@ -177,14 +177,8 @@ public class PotentialBFCDetector {
 	public List<TestFile> getTestFiles(List<ChangedFile> files) {
 		List<TestFile> testFiles = new LinkedList<>();
 		for (ChangedFile file : files) {
-			String str = file.getNewPath();
-			String[] strings = str.toLowerCase().split("/");
-			if (strings.length > 0) {
-				// 存在路径中包含test的Java文件，即测试用例
-				if (str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					TestFile testfile = (TestFile) file;
-					testFiles.add(testfile);
-				}
+			if (file instanceof TestFile) {
+				testFiles.add((TestFile) file);
 			}
 		}
 		return testFiles;
@@ -196,17 +190,27 @@ public class PotentialBFCDetector {
 	public List<NormalFile> getNormalJavaFiles(List<ChangedFile> files) {
 		List<NormalFile> normalJavaFiles = new LinkedList<>();
 		for (ChangedFile file : files) {
-			String str = file.getNewPath();
-			String[] strings = str.split("/");
-			if (strings.length > 0) {
-				// 存在非测试用例的Java文件
-				if (!str.contains("test") && strings[strings.length - 1].contains(".java")) {
-					NormalFile normalFile = (NormalFile) file;
-					normalJavaFiles.add(normalFile);
-				}
+			if (file instanceof NormalFile) {
+				normalJavaFiles.add((NormalFile) file);
 			}
 		}
 		return normalJavaFiles;
+	}
+
+	public void getChangedFile(DiffEntry entry, List<ChangedFile> files) throws Exception {
+		String path = entry.getNewPath();
+		if (path.contains("test") && path.endsWith(".java")) {
+			ChangedFile file = new TestFile(entry.getNewPath());
+			file.setOldPath(entry.getOldPath());
+			file.setEditList(getEdits(entry));
+			files.add(file);
+		}
+		if ((!path.contains("test")) && path.endsWith(".java")) {
+			ChangedFile file = new NormalFile(entry.getNewPath());
+			file.setOldPath(entry.getOldPath());
+			file.setEditList(getEdits(entry));
+			files.add(file);
+		}
 	}
 
 	/**

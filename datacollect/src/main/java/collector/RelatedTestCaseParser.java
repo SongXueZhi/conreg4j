@@ -5,24 +5,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jgit.diff.Edit;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevTree;
-import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.treewalk.TreeWalk;
 
 import model.Method;
 import model.PotentialRFC;
 import model.RelatedTestCase;
 import model.TestFile;
 import utils.CompilationUtil;
+import utils.GitUtil;
 
 public class RelatedTestCaseParser {
 	private Repository repo;
 
-	RelatedTestCaseParser(Repository repo) {
+	public RelatedTestCaseParser(Repository repo) {
 		this.repo = repo;
 	}
 
@@ -30,43 +25,53 @@ public class RelatedTestCaseParser {
 		Iterator<TestFile> iterator = pRFC.getTestCaseFiles().iterator();
 		while (iterator.hasNext()) {
 			TestFile file = iterator.next();
-			if (parse(file, pRFC).size() == 0) {
+			String code = GitUtil.getContextWithFile(repo, pRFC.getCommit(), file.getNewPath());
+			if (!isTestcase(code)) {
 				iterator.remove();
+				System.out.println(file.getNewPath() + ": 被移除");
+			}
+			List<RelatedTestCase> rcLsit = parse(file, pRFC, code);
+			if (rcLsit.size() == 0) {
+				iterator.remove();
+			} else {
+				file.setRelatedTestcaseList(rcLsit);
 			}
 		}
 	}
 
-	public List<RelatedTestCase> parse(TestFile file, PotentialRFC pRFC) throws Exception {
+	private List<RelatedTestCase> parse(TestFile file, PotentialRFC pRFC, String code) throws Exception {
 		List<Edit> editList = file.getEditList();
 		cleanEmpty(editList);
-		List<Method> methodList = CompilationUtil.getAllMethod(getContextWithFile(pRFC.getCommit(), file.getNewPath()));
+		List<Method> methodList = CompilationUtil.getAllMethod(code);
 		List<RelatedTestCase> testCaseList = new LinkedList<>();
 		if (justRepalceTypeEdit(editList)) {
-			// TOFD 写运行脚本
+			// TODO 写运行脚本
 		} else {
 			testCaseList.addAll(getRelatedTestCase(editList, methodList));
 		}
 		return testCaseList;
 	}
 
-	public List<RelatedTestCase> getRelatedTestCase(List<Edit> editList, List<Method> methodList) {
+	private List<RelatedTestCase> getRelatedTestCase(List<Edit> editList, List<Method> methodList) {
 		List<RelatedTestCase> result = new LinkedList<>();
 		for (Edit edit : editList) {
 			// 如果是insert暂时认为是插入了新的测试用例
 			if (Edit.Type.INSERT == edit.getType()) {
 				matchAll(edit, methodList, result);
+			} else {
+
 			}
 		}
 		return result;
 	}
 
-	public void matchAll(Edit edit, List<Method> methods, List<RelatedTestCase> result) {
+	private void matchAll(Edit edit, List<Method> methods, List<RelatedTestCase> result) {
 		for (Method method : methods) {
 			match(edit, method, result);
 		}
 	}
 
-	public void match(Edit edit, Method method, List<RelatedTestCase> result) {
+	private void match(Edit edit, Method method, List<RelatedTestCase> result) {
 		int editStart = edit.getBeginB();
 		int editEnd = edit.getEndB();
 
@@ -82,7 +87,7 @@ public class RelatedTestCaseParser {
 
 	}
 
-	public boolean justRepalceTypeEdit(List<Edit> editList) {
+	private boolean justRepalceTypeEdit(List<Edit> editList) {
 		for (Edit edit : editList) {
 			if (edit.getType() == Edit.Type.INSERT) {
 				return false;
@@ -91,7 +96,7 @@ public class RelatedTestCaseParser {
 		return true;
 	}
 
-	public void cleanEmpty(List<Edit> editList) {
+	private void cleanEmpty(List<Edit> editList) {
 		Iterator<Edit> iterator = editList.iterator();
 		while (iterator.hasNext()) {
 			Edit edit = iterator.next();
@@ -102,20 +107,11 @@ public class RelatedTestCaseParser {
 		}
 	}
 
-	public String getContextWithFile(RevCommit commit, String filePath) throws Exception {
-		RevWalk walk = new RevWalk(repo);
-		RevTree revTree = commit.getTree();
-		TreeWalk treeWalk = TreeWalk.forPath(repo, filePath, revTree);
-		// 文件名错误
-		if (treeWalk == null)
-			return null;
-
-		ObjectId blobId = treeWalk.getObjectId(0);
-		ObjectLoader loader = repo.open(blobId);
-		byte[] bytes = loader.getBytes();
-		if (bytes != null)
-			return new String(bytes);
-		return null;
-
+	private boolean isTestcase(String code) {
+		if (code.contains("junit") || code.contains("@est")) {
+			return true;
+		}
+		return false;
 	}
+
 }
