@@ -3,18 +3,20 @@ package gitwalk;
 import java.io.FileInputStream;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import model.Method;
 import utils.CompilationUtil;
 
 public class TestCompilationUtil {
+	String fileContent = "";
 
-	@Test
-	public void testGetMethodList() {
-		String filePath = "D:\\document\\project\\Fruits\\src\\main\\java\\basket\\fruits\\Solution.java";
+	@Before
+	public void init() {
+		String filePath = "/home/sxz/Desktop/Solution.java";
 		FileInputStream fis = null;
-		String fileContent = "";
+
 		try {
 			fis = new FileInputStream(filePath); // 内容是：abc
 			StringBuilder sb = new StringBuilder();
@@ -27,6 +29,11 @@ public class TestCompilationUtil {
 		} catch (Exception exc) {
 
 		}
+	}
+
+	@Test
+	public void testGetMethodList() {
+
 		List<Method> methodList = CompilationUtil.getAllMethod(fileContent);
 		for (Method method : methodList) {
 			String name = method.getSignature();
@@ -34,6 +41,12 @@ public class TestCompilationUtil {
 			int q = method.getStopLine();
 			System.out.println(name + " " + p + " --> " + q);
 		}
+	}
+
+	@Test
+	public void testGetClassName() {
+		String ss = CompilationUtil.getQualityClassName(fileContent);
+		System.out.println(ss);
 	}
 
 }

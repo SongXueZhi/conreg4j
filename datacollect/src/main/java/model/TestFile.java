@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 public class TestFile extends ChangedFile {
+	public Type type;
 	List<RelatedTestCase> relatedTestcaseList;
 
 	public List<RelatedTestCase> getRelatedTestcaseList() {
@@ -16,4 +17,5 @@ public class TestFile extends ChangedFile {
 	public TestFile(String newPath) {
 		super(newPath);
 	}
+
 }

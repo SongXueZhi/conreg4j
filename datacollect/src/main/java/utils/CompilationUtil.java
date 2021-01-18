@@ -12,6 +12,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import ast.MemberRetriever;
+import ast.TypeRetriever;
 import model.Method;
 
 public class CompilationUtil {
@@ -28,10 +29,10 @@ public class CompilationUtil {
 		return result;
 	}
 
-	public static List<Method> getAllMethod(String filePath) {
+	public static List<Method> getAllMethod(String codeContent) {
 		List<Method> methods = new ArrayList<>();
 		MemberRetriever retriever = new MemberRetriever();
-		CompilationUnit unit = parseCompliationUnit(filePath);
+		CompilationUnit unit = parseCompliationUnit(codeContent);
 		unit.accept(retriever);
 		List<ASTNode> methodNodes = retriever.getMemberList();
 		for (ASTNode node : methodNodes) {
@@ -48,5 +49,14 @@ public class CompilationUtil {
 			methods.add(new Method(signature, startLine, endLine));
 		}
 		return methods;
+	}
+
+	public static String getQualityClassName(String codeContent) {
+		String result;
+		CompilationUnit unit = parseCompliationUnit(codeContent);
+		TypeRetriever retriever = new TypeRetriever();
+		unit.accept(retriever);
+		result = retriever.getQualityName();
+		return result;
 	}
 }

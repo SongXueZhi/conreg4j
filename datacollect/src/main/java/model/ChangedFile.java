@@ -9,7 +9,15 @@ public class ChangedFile {
 	private String oldPath;
 	private List<Method> methods;
 	private List<Edit> editList;
-	private int type;
+	private Type type;
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
 
 	public String getOldPath() {
 		return oldPath;
@@ -23,10 +31,6 @@ public class ChangedFile {
 		this.newPath = newPath;
 	}
 
-	public ChangedFile(String newPath, int type) {
-		this.newPath = newPath;
-		this.type = type;
-	}
 
 	public List<Edit> getEditList() {
 		return editList;
@@ -36,13 +40,6 @@ public class ChangedFile {
 		this.editList = editList;
 	}
 
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
 
 	public String getNewPath() {
 		return newPath;
@@ -58,6 +55,10 @@ public class ChangedFile {
 
 	public void setMethods(List<Method> methods) {
 		this.methods = methods;
+	}
+
+	public enum Type {
+		TEST_SUITE, TEST_RELATE, JAVA_FILE, ANOTHER
 	}
 
 }

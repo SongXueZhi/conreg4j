@@ -30,17 +30,10 @@ public class PotentialBFCDetector {
 	private Repository repo;
 	private Git git;
 
-	public Repository getRepo() {
-		return repo;
-	}
-
 	public void setRepo(Repository repo) {
 		this.repo = repo;
 	}
 
-	public Git getGit() {
-		return git;
-	}
 
 	public void setGit(Git git) {
 		this.git = git;
@@ -66,14 +59,16 @@ public class PotentialBFCDetector {
 		long time1 = System.currentTimeMillis();
 		// 开始迭代每一个commit
 		for (RevCommit commit : commits) {
-			if (!commit.getName().equals("4fb5d59c644a03c094bd4ecba562eab750815722")) {
-				continue;
-			}
 			detect(commit, potentialRFCs);
 			countAll++;
 		}
 		System.out.println("总共分析了" + countAll + "条commit\n");
-		System.out.println("总耗时 ：" + (System.currentTimeMillis() - time1) / 1000);
+		System.out.println("pRFC in total :" + potentialRFCs.size());
+		System.out.println("pRFC分析总耗时 ：" + (float) (System.currentTimeMillis() - time1) / 1000);
+//		for (PotentialRFC pRFC : potentialRFCs) {
+//			System.out.println(pRFC.getNormalJavaFiles().size() + " " + pRFC.getTestCaseFiles().size() + " "
+//					+ pRFC.getCommit().getName());
+//		}
 		return potentialRFCs;
 	}
 
