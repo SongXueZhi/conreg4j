@@ -1,21 +1,31 @@
 package model;
 
-import java.util.List;
+import java.util.Map;
 
 public class TestFile extends ChangedFile {
 	public Type type;
-	List<RelatedTestCase> relatedTestcaseList;
+	private Map<String, RelatedTestCase> testMethodMap;
+	private String qualityClassName;
 
-	public List<RelatedTestCase> getRelatedTestcaseList() {
-		return relatedTestcaseList;
-	}
-
-	public void setRelatedTestcaseList(List<RelatedTestCase> relatedTestcaseList) {
-		this.relatedTestcaseList = relatedTestcaseList;
-	}
-
+	
 	public TestFile(String newPath) {
 		super(newPath);
+	}
+
+	public String getQualityClassName() {
+		return qualityClassName;
+	}
+
+	public void setQualityClassName(String qualityClassName) {
+		this.qualityClassName = qualityClassName;
+	}
+
+	public Map<String, RelatedTestCase> getTestMethodMap() {
+		return testMethodMap;
+	}
+
+	public void setTestMethodMap(Map<String, RelatedTestCase> testMethodMap) {
+		this.testMethodMap = testMethodMap;
 	}
 
 }

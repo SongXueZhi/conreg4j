@@ -56,15 +56,23 @@ public class PotentialBFCDetector {
 
 		// 获取所有的commit，我们需要对所有的commit进行分析
 		Iterable<RevCommit> commits = git.log().all().call();
-		long time1 = System.currentTimeMillis();
 		// 开始迭代每一个commit
+		boolean a = true;
 		for (RevCommit commit : commits) {
+			// a 用于从失败的节点重新开始
+//			if (commit.getName().equals("7b17321ad2b1e0d5bb5e866eba49d5833b9f9ee0")) {
+//				a = true;
+//			}
+			if (a) {
 			detect(commit, potentialRFCs);
+			}
+			if (potentialRFCs.size() == 400) {
+				break;
+			}
 			countAll++;
 		}
 		System.out.println("总共分析了" + countAll + "条commit\n");
 		System.out.println("pRFC in total :" + potentialRFCs.size());
-		System.out.println("pRFC分析总耗时 ：" + (float) (System.currentTimeMillis() - time1) / 1000);
 //		for (PotentialRFC pRFC : potentialRFCs) {
 //			System.out.println(pRFC.getNormalJavaFiles().size() + " " + pRFC.getTestCaseFiles().size() + " "
 //					+ pRFC.getCommit().getName());
@@ -242,11 +250,14 @@ public class PotentialBFCDetector {
 			// 1）若所有路径中存在任意一个路径包含test相关的Java文件则我们认为本次提交中包含测试用例。
 			// 2）若所有路径中除了测试用例还包含其他的非测试用例的Java文件则commit符合条件
 			if (testcaseFiles.size() > 0 && normalJavaFiles.size() > 0) {
+				// 3de9e92f098d2d9b37011ab3616fa28363afdda6
+
 				PotentialRFC pRFC = new PotentialRFC(commit);
 				pRFC.setTestCaseFiles(testcaseFiles);
 				pRFC.setNormalJavaFiles(normalJavaFiles);
 				pRFC.setPriority(Priority.high);
 				potentialRFCs.add(pRFC);
+
 			} else if (justNormalJavaFile(files)) {
 //				针对只标题只包含fix但是修改的文件路径中没有测试用例的提交 
 //				我们将在(c-3,c+3) 的范围内检索可能的测试用例 

@@ -37,7 +37,8 @@ public class CompilationUtil {
 		List<ASTNode> methodNodes = retriever.getMemberList();
 		for (ASTNode node : methodNodes) {
 			MethodDeclaration methodDeclaration = (MethodDeclaration) node;
-			StringBuilder sb = new StringBuilder(methodDeclaration.getName().toString());
+			String simpleName = methodDeclaration.getName().toString();
+			StringBuilder sb = new StringBuilder(simpleName);
 			List<ASTNode> parameters = methodDeclaration.parameters();
 			// SingleVariableDeclaration
 			for (ASTNode param : parameters) {
@@ -46,7 +47,7 @@ public class CompilationUtil {
 			String signature = sb.toString();
 			int startLine = unit.getLineNumber(methodDeclaration.getStartPosition()) - 1;
 			int endLine = unit.getLineNumber(methodDeclaration.getStartPosition() + node.getLength()) - 1;
-			methods.add(new Method(signature, startLine, endLine));
+			methods.add(new Method(signature, startLine, endLine, simpleName));
 		}
 		return methods;
 	}

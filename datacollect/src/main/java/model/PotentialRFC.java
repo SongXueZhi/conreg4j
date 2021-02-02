@@ -9,7 +9,8 @@ public class PotentialRFC {
 	private int priority;
 	private List<NormalFile> normalJavaFiles;
 	private List<TestFile> testCaseFiles;
-	private List<PotentialTestCase> potentialTestcases;
+
+//	private List<PotentialTestCase> potentialTestcases;
 
 	public PotentialRFC(RevCommit commit) {
 		this.commit = commit;
@@ -39,13 +40,13 @@ public class PotentialRFC {
 		this.testCaseFiles = testCaseFiles;
 	}
 
-	public List<model.PotentialTestCase> getPotentialTestcases() {
-		return potentialTestcases;
-	}
-
-	public void setPotentialTestcases(List<model.PotentialTestCase> potentialTestcases) {
-		this.potentialTestcases = potentialTestcases;
-	}
+//	public List<model.PotentialTestCase> getPotentialTestcases() {
+//		return potentialTestcases;
+//	}
+//
+//	public void setPotentialTestcases(List<model.PotentialTestCase> potentialTestcases) {
+//		this.potentialTestcases = potentialTestcases;
+//	}
 
 	public int getPriority() {
 		return priority;
@@ -54,5 +55,6 @@ public class PotentialRFC {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+
 
 }

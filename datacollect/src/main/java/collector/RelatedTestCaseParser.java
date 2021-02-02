@@ -1,9 +1,12 @@
 package collector;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.lib.Repository;
 
@@ -26,13 +29,14 @@ public class RelatedTestCaseParser {
 	}
 
 	public void parseTestSuite(List<PotentialRFC> pRFCList) throws Exception {
+
 		for (PotentialRFC pRFC : pRFCList) {
 			parseTestCases(pRFC);
 		}
 		Iterator<PotentialRFC> iterator = pRFCList.iterator();
 		while (iterator.hasNext()) {
 			PotentialRFC pRFC = iterator.next();
-			if (pRFC.getTestCaseFiles().size() > 25) {
+			if (pRFC.getTestCaseFiles().size() > 3) {
 				iterator.remove();
 				System.out.println("该测试被移除" + pRFC.getCommit().getName());
 			}
@@ -46,92 +50,99 @@ public class RelatedTestCaseParser {
 		while (iterator.hasNext()) {
 			TestFile file = iterator.next();
 			String code = GitUtil.getContextWithFile(repo, pRFC.getCommit(), file.getNewPath());
+			FileUtils.writeStringToFile(
+					new File("tmp" + File.separator + pRFC.getCommit().getName() + File.separator + file.getNewPath()),
+					code);
 			if (!isTestSuite(code)) {
 				file.setType(Type.TEST_RELATE);
 			} else {
 				file.setType(Type.TEST_SUITE);
+				file.setQualityClassName(CompilationUtil.getQualityClassName(code));
+				Map<String, RelatedTestCase> methodMap = parse(file, code);
+				file.setTestMethodMap(methodMap);
 			}
-//			List<RelatedTestCase> rcLsit = parse(file, pRFC, code);
-//			if (rcLsit.size() == 0) {
-//				iterator.remove();
-//			} else {
-//				file.setRelatedTestcaseList(rcLsit);
-//			}
 		}
 	}
 
-	// 功能停用
-	// 该功能目前不好用，所以只要修改了测试用例就算
-	private List<RelatedTestCase> parse(TestFile file, PotentialRFC pRFC, String code) throws Exception {
+	private Map<String, RelatedTestCase> parse(TestFile file, String code) throws Exception {
 		List<Edit> editList = file.getEditList();
-		cleanEmpty(editList);
+//		cleanEmpty(editList);
 		List<Method> methodList = CompilationUtil.getAllMethod(code);
-		List<RelatedTestCase> testCaseList = new LinkedList<>();
-		if (justRepalceTypeEdit(editList)) {
-			// TODO 写运行脚本
-		} else {
-			testCaseList.addAll(getRelatedTestCase(editList, methodList));
-		}
-		return testCaseList;
+		Map<String, RelatedTestCase> testCaseMap = new HashMap<>();
+//		if (justRepalceTypeEdit(editList)) {
+//			// TODO 写运行脚本
+//		} else {
+
+//		}
+		// 现在只要改了的方法就算
+		getRelatedTestCase(editList, methodList, testCaseMap);
+		return testCaseMap;
 	}
 
-	private List<RelatedTestCase> getRelatedTestCase(List<Edit> editList, List<Method> methodList) {
-		List<RelatedTestCase> result = new LinkedList<>();
+	private void getRelatedTestCase(List<Edit> editList, List<Method> methodList,
+			Map<String, RelatedTestCase> testCaseMap) {
 		for (Edit edit : editList) {
-			// 如果是insert暂时认为是插入了新的测试用例
-			if (Edit.Type.INSERT == edit.getType()) {
-				matchAll(edit, methodList, result);
-			} else {
-
-			}
+			// (暂时取消该功能)如果是insert暂时认为是插入了新的测试用例
+//			if (Edit.Type.INSERT == edit.getType()) {
+//
+//			} else {
+//
+//			}
+			matchAll(edit, methodList, testCaseMap);
 		}
-		return result;
 	}
 
-	private void matchAll(Edit edit, List<Method> methods, List<RelatedTestCase> result) {
+	private void matchAll(Edit edit, List<Method> methods, Map<String, RelatedTestCase> testCaseMap) {
 		for (Method method : methods) {
-			match(edit, method, result);
+			match(edit, method, testCaseMap);
 		}
 	}
 
-	private void match(Edit edit, Method method, List<RelatedTestCase> result) {
+	//
+	private void match(Edit edit, Method method, Map<String, RelatedTestCase> testCaseMap) {
 		int editStart = edit.getBeginB();
 		int editEnd = edit.getEndB();
 
 		int methodStart = method.getStartLine();
 		int methodStop = method.getStopLine();
-
-		if (editStart <= methodStart && editEnd >= methodStop) {
-			RelatedTestCase testCase = new RelatedTestCase();
-			testCase.setType(RelatedTestCase.Type.Created);
-			testCase.setMethod(method);
-			result.add(testCase);
-		}
-
-	}
-
-	private boolean justRepalceTypeEdit(List<Edit> editList) {
-		for (Edit edit : editList) {
-			if (edit.getType() == Edit.Type.INSERT) {
-				return false;
+		
+		if (editStart <= methodStart && editEnd >= methodStop || editStart >= methodStart && editEnd <= methodStop
+				|| editEnd >= methodStart && editEnd <= methodStop
+				|| editStart >= methodStart && editStart <= methodStop) {
+			String name = method.getSimpleName();
+			if (!testCaseMap.containsKey(name)) {
+				RelatedTestCase testCase = new RelatedTestCase();
+				// 暂时不设定方法的类型
+				// testCase.setType(RelatedTestCase.Type.Created);
+				testCase.setMethod(method);
+				testCaseMap.put(name, testCase);
 			}
 		}
-		return true;
+
 	}
 
-	private void cleanEmpty(List<Edit> editList) {
-		Iterator<Edit> iterator = editList.iterator();
-		while (iterator.hasNext()) {
-			Edit edit = iterator.next();
-			// 如果是insert暂时认为是插入了新的测试用例
-			if (Edit.Type.EMPTY == edit.getType()) {
-				iterator.remove();
-			}
-		}
-	}
+//	private boolean justRepalceTypeEdit(List<Edit> editList) {
+//		for (Edit edit : editList) {
+//			if (edit.getType() == Edit.Type.INSERT) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
+
+//	private void cleanEmpty(List<Edit> editList) {
+//		Iterator<Edit> iterator = editList.iterator();
+//		while (iterator.hasNext()) {
+//			Edit edit = iterator.next();
+//			// 如果是insert暂时认为是插入了新的测试用例
+//			if (Edit.Type.EMPTY == edit.getType()) {
+//				iterator.remove();
+//			}
+//		}
+//	}
 
 	private boolean isTestSuite(String code) {
-		if (code.contains("junit") || code.contains("@est")) {
+		if (code.contains("junit") || code.contains("@Test")) {
 			return true;
 		}
 		return false;
