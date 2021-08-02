@@ -23,10 +23,10 @@ import conrebd.executor.Adminexec;
  * @author knightsong
  */
 public class TestForAdmin {
-
+	public static final String REPO="dbtools-query";// TODO
+	public static final String PATH="/Users/xiaoqb/code/regminer/repo4conreg_week4/";// TODO
+	String pathname = PATH+REPO+"/reg.csv";
 	Adminexec exec = new Adminexec();
-	// TODO XQB
-	String pathname = "/home/sxz/miner_space/univ/regression.csv";
 	String currentFile = "";
 	File resultFile = new File("result.csv");
 
@@ -42,10 +42,10 @@ public class TestForAdmin {
 
 	public String statictis(String line) throws Exception {
 		String[] ss = line.split(",");
-		String projectName = "univ";// TODO XQB
+		String projectName = REPO;
 		if (!projectName.equals(currentFile)) {
 			currentFile = projectName;
-			setDirectory("/home/sxz/miner_space/" + currentFile + File.separator + "meta");// TODO XQB
+			setDirectory(PATH + currentFile + File.separator + "meta");
 		}
 		StringBuilder sb = new StringBuilder(currentFile + "_" + ss[0]);
 		sb.append(",");
@@ -53,6 +53,7 @@ public class TestForAdmin {
 		sb.append(diffInChanges(ss[0] + "~1", ss[2])).append(",");
 		sb.append(diffInCommits(ss[0] + "~1", ss[2])).append(",");
 		sb.append(diffInTime(ss[0] + "~1", ss[2]));
+		sb.append(diffInChanges(ss[1],ss[2]));
 		FileUtils.write(resultFile, sb.toString() + "\n", true);
 		return sb.toString();
 	}
@@ -62,12 +63,15 @@ public class TestForAdmin {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		System.out.print("admin#:");
 		String cmd = bf.readLine().trim();
-		test.navigation(cmd);
-		while (!cmd.equalsIgnoreCase("exit")) {
-			System.out.print("admin#:");
-			cmd = bf.readLine().trim();
-			test.navigation(cmd);
+		if (cmd.equalsIgnoreCase("exit")) {
+			return;
 		}
+//		test.navigation(cmd);
+//		while (!cmd.equalsIgnoreCase("exit")) {
+//			System.out.print("admin#:");
+//			cmd = bf.readLine().trim();
+			test.navigation(cmd);
+//		}
 	}
 
 	public void setDirectory(String pathString) {
