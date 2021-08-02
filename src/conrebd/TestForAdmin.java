@@ -23,8 +23,8 @@ import conrebd.executor.Adminexec;
  * @author knightsong
  */
 public class TestForAdmin {
-	public static final String REPO="dbtools-query";// TODO
-	public static final String PATH="/Users/xiaoqb/code/regminer/repo4conreg_week4/";// TODO
+	public static final String REPO="cronutil";// TODO
+	public static final String PATH="/Users/xiaoqb/code/regminer/repo4conreg_sxz/";// TODO
 	String pathname = PATH+REPO+"/reg.csv";
 	Adminexec exec = new Adminexec();
 	String currentFile = "";
