@@ -23,24 +23,25 @@ import conrebd.executor.Adminexec;
  * @author knightsong
  */
 public class TestForAdmin {
-	public static final String REPO="cronutil";// TODO
-	public static final String PATH="/Users/xiaoqb/code/regminer/repo4conreg_sxz/";// TODO
-	String pathname = PATH+REPO+"/reg.csv";
+//	public static final String REPO="gwt-crypto";// TODO
+//	public static final String PATH="/Users/xiaoqb/code/regminer/repo4conreg_week2/";// TODO
 	Adminexec exec = new Adminexec();
 	String currentFile = "";
 	File resultFile = new File("result.csv");
 
 	// jdk dbcp flink lucene derby groovy pool
-	public void handleTask() throws Exception {
+	public void handleTask(String REPO,String PATH) throws Exception {
+		String pathname = PATH+REPO+"/reg.csv";
 		try (BufferedReader bf = new BufferedReader(new FileReader(new File(pathname)))) {
 			String line;
 			while ((line = bf.readLine()) != null) {
-				System.out.println(statictis(line));
+				System.out.println(statictis(line,REPO,PATH));
 			}
 		}
+
 	}
 
-	public String statictis(String line) throws Exception {
+	public String statictis(String line, String REPO,String PATH) throws Exception {
 		String[] ss = line.split(",");
 		String projectName = REPO;
 		if (!projectName.equals(currentFile)) {
@@ -59,18 +60,23 @@ public class TestForAdmin {
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
+//		String REPO="sboesebeck";// TODO
+		String PATH = args[0];
+		String REPO= args[1];
+//		String PATH="/Users/xiaoqb/code/regminer/repo4conreg_week2/";// TODO
 		TestForAdmin test = new TestForAdmin();
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		System.out.print("admin#:");
-		String cmd = bf.readLine().trim();
-		if (cmd.equalsIgnoreCase("exit")) {
-			return;
-		}
+//		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+//		System.out.print("admin#:");
+//		String cmd = bf.readLine().trim();
+//		if (cmd.equalsIgnoreCase("exit")) {
+//			return;
+//		}
 //		test.navigation(cmd);
+		test.navigation("",REPO,PATH);
 //		while (!cmd.equalsIgnoreCase("exit")) {
 //			System.out.print("admin#:");
 //			cmd = bf.readLine().trim();
-			test.navigation(cmd);
+//			test.navigation(cmd);
 //		}
 	}
 
@@ -121,7 +127,7 @@ public class TestForAdmin {
 		return String.valueOf(l);
 	}
 
-	public void navigation(String cmd) throws Exception {
+	public void navigation(String cmd,String REPO,String PATH) throws Exception {
 		if (cmd.contains("set")) {
 			String[] params = cmd.split(" ");
 			String pathString = params[1];
@@ -133,7 +139,7 @@ public class TestForAdmin {
 			String version2 = params[2];
 			System.out.println(diffChunck(version1, version2));
 		} else {
-			handleTask();
+			handleTask( REPO, PATH);
 		}
 	}
 
