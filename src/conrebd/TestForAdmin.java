@@ -31,7 +31,7 @@ public class TestForAdmin {
 
 	// jdk dbcp flink lucene derby groovy pool
 	public void handleTask(String REPO,String PATH) throws Exception {
-		String pathname = PATH+REPO+"/reg.csv";
+		String pathname = PATH+"repo4conreg/"+REPO+"/reg.csv";
 		try (BufferedReader bf = new BufferedReader(new FileReader(new File(pathname)))) {
 			String line;
 			while ((line = bf.readLine()) != null) {
@@ -46,7 +46,7 @@ public class TestForAdmin {
 		String projectName = REPO;
 		if (!projectName.equals(currentFile)) {
 			currentFile = projectName;
-			setDirectory(PATH + currentFile + File.separator + "meta");
+			setDirectory(PATH+"/repo4conreg/"+ currentFile + File.separator + "meta");
 		}
 		StringBuilder sb = new StringBuilder(currentFile + "_" + ss[0]);
 		sb.append(",");
